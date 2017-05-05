@@ -4,19 +4,17 @@ import QtQml 2.2
 
 Item {
     id: pageDatis
+    anchors.fill: parent
 
     GridLayout {
         id: layout
         rows: 2
         columns: 2
         anchors.margins: 5
-
         anchors.fill: parent
-
-//        columnSpacing: 2
-//        rowSpacing: 2
         flow: GridLayout.TopToBottom
 
+        // 通播版本号
         Rectangle {
             id: datisCodeRect
             // 使用Layout布局则使用Layout宽高，另有最大最小宽高
@@ -24,7 +22,7 @@ Item {
             Layout.preferredWidth: parent.width * 0.6
             border.width: 1
             border.color: "grey"
-
+            color: "transparent"
 
             Text {
                 id: datisCodeText
@@ -39,15 +37,15 @@ Item {
             }
 
             Text {
-                //                id: datisCodeRectText
                 text: qsTr("通播代号")
                 anchors.left: parent.left
                 anchors.leftMargin: 6
                 anchors.top: parent.top
                 anchors.topMargin: 2
             }
-        }
+        } // 通播版本号
 
+        // 跑道号
         Rectangle {
             id: rwyRect
             // 相对高度
@@ -55,6 +53,7 @@ Item {
             Layout.preferredWidth: datisCodeRect.width
             border.width: 1
             border.color: "grey"
+            color: "transparent"
 
             Text {
                 id: rwyText
@@ -67,35 +66,29 @@ Item {
                 text: qsTr("08")
             }
 
-
-
             Text {
-                //                id: datisCodeRectText
                 text: qsTr("跑道号")
                 anchors.left: parent.left
                 anchors.leftMargin: 6
                 anchors.top: parent.top
                 anchors.topMargin: 2
             }
-        }
+        } // 跑道号
 
+        // GridLayout 3
         ColumnLayout {
+            // 通播号更新时间
             Rectangle {
                 id: datisTimeRect
-    //            width: 200
-    //            height: 200
-    //            color: "#ffffff"
                 // 左边控件定义了宽度，这里填满剩下的宽度
                 Layout.fillHeight: true
                 // 左边控件定义了高度，这里为左边控件的高度
                 Layout.fillWidth: true
-    //            Layout.rowSpan: 2
-    //            Layout.columnSpan: 1
                 border.width: 1
                 border.color: "grey"
+                color: "transparent"
 
                 Text {
-                    //                id: datisCodeRectText
                     text: qsTr("更新时间")
                     anchors.left: parent.left
                     anchors.leftMargin: 6
@@ -111,19 +104,16 @@ Item {
                 }
             }
 
+            // 通播号超时时间
             Rectangle {
                 id: datisOverTimeRect
-    //            width: 200
-    //            height: 200
-    //            color: "#ffffff"
                 // 左边控件定义了宽度，这里填满剩下的宽度
                 Layout.fillHeight: true
                 // 左边控件定义了高度，这里为左边控件的高度
                 Layout.fillWidth: true
-    //            Layout.rowSpan: 2
-    //            Layout.columnSpan: 1
                 border.width: 1
                 border.color: "grey"
+                color: "transparent"
 
                 Text {
                     //                id: datisCodeRectText
@@ -138,26 +128,23 @@ Item {
                     id: datisOverTime
                     anchors.centerIn: parent
                     text: qsTr("text")
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
                     font.pointSize: parent.height/8
                 }
             }
 
         }
 
-
-
+        // 当前时间
         Rectangle {
             id: timeRect
-//            width: 200
             Layout.fillHeight: true
             Layout.fillWidth: true
-//            Layout.rowSpan: 2
-//            Layout.columnSpan: 1
-//            color: "#ffffff"
             border.width: 1
             border.color: "grey"
+            color: "transparent"
             Text {
-                //                id: datisCodeRectText
                 text: qsTr("当前时间")
                 anchors.left: parent.left
                 anchors.leftMargin: 6
@@ -166,7 +153,6 @@ Item {
             }
             Text {
                 id: currentTime
-//                font.pointSize: 24
                 font.pointSize: parent.height/8
                 font.family: "Arial"
                 verticalAlignment: Text.AlignVCenter
@@ -175,6 +161,7 @@ Item {
                 anchors.centerIn: parent
 
             }
+            // 定时器，0.5s，刷新时间
             Timer {
                 interval: 500; running: true; repeat: true;
                 onTriggered: currentTime.text = Qt.formatDate(new Date(), "yyyy-MM-dd") + "\n" + Qt.formatTime(new Date(), "hh:mm:ss");
