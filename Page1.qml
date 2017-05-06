@@ -3,8 +3,9 @@ import QtQuick.Layouts 1.3
 import QtQml 2.2
 
 Item {
-    id: pageDatis
+//    id: pageDatis
     anchors.fill: parent
+
 
     GridLayout {
         id: layout
@@ -24,17 +25,25 @@ Item {
             border.color: "grey"
             color: "transparent"
 
-            Text {
-                id: datisCodeText
-                color: "#07b716"
-                font.family: "Arial"
-                font.bold: true
-//                font.pointSize: 72
-                font.pointSize: parent.height/2
-                anchors.centerIn: parent
-                text: qsTr("A")
+            ListView {
+                anchors.fill: parent
+                model: xmlModel
+                delegate: Text {
+                    id: datisCodeText
+                    color: "#07b716"
+                    font.family: "Arial"
+                    font.bold: true
+    //                font.pointSize: 72
+                    font.pointSize: parent.height/2
+                    anchors.centerIn: parent
+//                    text: qsTr("-")
+    //                text: xmlModel.get(0).ATISVersion
+                    text: ATISVersion
 
+                }
             }
+
+
 
             Text {
                 text: qsTr("通播代号")
@@ -55,16 +64,24 @@ Item {
             border.color: "grey"
             color: "transparent"
 
-            Text {
-                id: rwyText
-                color: "#07b716"
-                font.family: "Arial"
-                font.bold: true
-//                font.pointSize: 72
-                font.pointSize: parent.height/2
-                anchors.centerIn: parent
-                text: qsTr("08")
+            ListView {
+                anchors.fill: parent
+                model: xmlModel
+                delegate: Text {
+                    id: rwyText
+                    color: "#07b716"
+                    font.family: "Arial"
+                    font.bold: true
+    //                font.pointSize: 72
+                    font.pointSize: parent.height/2
+                    anchors.centerIn: parent
+//                    text: qsTr("-")
+    //                text: xmlModel.get(0).ArrRwy
+                    text: ArrRwy
+                }
             }
+
+
 
             Text {
                 text: qsTr("跑道号")
@@ -96,12 +113,20 @@ Item {
                     anchors.topMargin: 2
                 }
 
-                Text {
-                    id: datisTime
-                    anchors.centerIn: parent
-                    text: qsTr("text")
-                    font.pointSize: parent.height/8
+                ListView {
+                    anchors.fill: parent
+                    model: xmlModel
+                    delegate: Text {
+                        id: datisTime
+                        anchors.centerIn: parent
+//                        text: qsTr("-")
+    //                    text: xmlModel.get(0).UpdateTime
+                        font.pointSize: parent.height/8
+                        text: UpdateTime
+                    }
                 }
+
+
             }
 
             // 通播号超时时间
@@ -127,7 +152,8 @@ Item {
                 Text {
                     id: datisOverTime
                     anchors.centerIn: parent
-                    text: qsTr("text")
+                    text: qsTr("-")
+//                    text: xmlModel.get(0).ExpiredTime
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     font.pointSize: parent.height/8
@@ -164,6 +190,7 @@ Item {
             // 定时器，0.5s，刷新时间
             Timer {
                 interval: 500; running: true; repeat: true;
+//                var date = new Date();
                 onTriggered: currentTime.text = Qt.formatDate(new Date(), "yyyy-MM-dd") + "\n" + Qt.formatTime(new Date(), "hh:mm:ss");
                 triggeredOnStart: true
 //                onTriggered: currentTime.text = Date().toString();

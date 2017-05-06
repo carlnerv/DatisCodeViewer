@@ -27,11 +27,14 @@ ApplicationWindow {
                 anchors.fill: parent
                 source: "content/menu.png"
             }
-            onClicked:  popup.visible ? popup.close(): popup.open();
+            onClicked:  {
+                popup.visible ? popup.close(): popup.open();
+            }
         }
     }
 
     Page1 {
+        id: page1
 //        anchors.fill: parent
     }
 
@@ -71,22 +74,24 @@ ApplicationWindow {
             }
         }
 
-        PopupPage{
-//            anchors.fill: parent
+        PopupPage {
+            id: popPage
         }
 
 
     } // popup
 
-    Component {
-        id: codeViewer
-        XmlListModel {
-            id: xmlModel
-            // source:
-            query: "ACARS/Body"
-            XmlRole { name:"Version"; query:"@Version/string()" }
-            XmlRole { name:"Time"; query: "@Time/string()" }
-            XmlRole { name:"OverTime"; query: "@OverTime/string()" }
-        }
+    XmlListModel {
+        id: xmlModel
+        // source:
+
+        query: "/ACARS/Body"
+        XmlRole { name:"ATISVersion"; query:"@ATISVersion/string()" }
+        XmlRole { name:"UpdateTime"; query: "@UpdateTime/string()" }
+        XmlRole { name:"ExpiredTime"; query: "@ExpiredTime/string()" }
+        XmlRole { name:"DepRwy"; query:"Receiver/nd[2]/@DepRwy/number()" }
+        XmlRole { name:"ArrRwy"; query:"Receiver/nd[2]/@ArrRwy/number()" }
+        XmlRole { name:"approach"; query:"Receiver/nd[8]/@type/string()" }
     }
+
 }

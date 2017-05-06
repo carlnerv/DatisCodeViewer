@@ -1,4 +1,4 @@
-import QtQuick 2.8
+import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.1
 import QtQuick.Controls.impl 2.1
@@ -8,6 +8,10 @@ import QtQuick.Layouts 1.3
 ColumnLayout {
     id: popupCl
     anchors.fill: parent
+
+//    property alias stackIndex: stackLayout.currentIndex
+//    property alias ftpSource: ftpPath.text
+//    property alias localFileSource: fileDialog.fileUrl
 
     TabBar {
         id: tabBar
@@ -30,9 +34,9 @@ ColumnLayout {
                         ? (tabButton1.checked ? Default.tabButtonCheckedPressedColor : Default.tabButtonPressedColor)
                         : (tabButton1.checked ? "transparent" : /*Default.tabButtonColor*/"grey")
                 }
-            onClicked: {
-                openFileButton.text = "打开本地文件"
-            }
+//            onClicked: {
+//                openFileButton.text = "打开本地文件"
+//            }
         }
         TabButton {
             id: tabButton2
@@ -43,16 +47,17 @@ ColumnLayout {
                         ? (tabButton2.checked ? Default.tabButtonCheckedPressedColor : Default.tabButtonPressedColor)
                         : (tabButton2.checked ? "transparent" : /*Default.tabButtonColor*/"grey")
                 }
-            onClicked: {
-                ftpPath.text = ""
-                ftpUser.text = ""
-                ftpPW.text = ""
-            }
+//            onClicked: {
+//                ftpPath.text = ""
+//                ftpUser.text = ""
+//                ftpPW.text = ""
+//            }
         }
     }
 
     StackLayout {
         id: stackLayout
+        height: 150
         currentIndex: tabBar.currentIndex
 //                    width: parent.width
 
@@ -76,6 +81,18 @@ ColumnLayout {
                 echoMode: "Password"
                 width: popupCl.width
             }
+            Button {
+                text: "载入"
+                onClicked: {
+
+                        var str = String(ftpPath.text);
+                        if(str.slice(0,8)!="ftp://")str = "ftp://" + str;
+                        xmlModel.source = str;
+
+
+                    xmlModel.reload();
+                }
+            }
 
         }
 
@@ -94,11 +111,16 @@ ColumnLayout {
                 text: "打开本地文件"
                 width:  parent.width
                 height: 40
-                onClicked: fileDialog.open();
+                onClicked: {
+                    fileDialog.open();
+
+                }
             }
 //        }
         }
     } // StackLayout
+
+
 
     Rectangle {
         height: 2
@@ -111,16 +133,23 @@ ColumnLayout {
         height: 200
 //        Layout.fillHeight: true
         Text {
-            text: "1"
+            text: "<h1>关于DatisCodeViewer<h1><br><div>作者：carlnerv<br>反馈
+<br>使用库：Qt 5.8</div>"
         }
     }
 
     FileDialog {
         id: fileDialog
-        title: "打开xml文件"
-        nameFilters: [ "XML (*.xml)" ]
+        title: "打开Message.xml文件"
+        nameFilters: [ "Message文件 (Message.xml)" ]
         onAccepted: {
-            openFileButton.text = fileUrl;
+            var furl = String(fileUrl);
+            openFileButton.text = furl.slice(8); // 切掉file://，从第8个字符开始
+            xmlModel.source = fileUrl;
+//            page1.datisVersion = xmlModel.get(0).ATISVersion;
+//            page1.rwyText = xmlModel.get(0).ArrRwy;
+//            page1.datisTime = xmlModel.get(0).UpdateTime;
+//            page1.datisOverTime = xmlModel.get(0).ExpiredTime;
             close();
         }
         onRejected: {
