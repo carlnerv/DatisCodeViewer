@@ -3,9 +3,9 @@ import QtQuick.Layouts 1.3
 import QtQml 2.2
 
 Item {
-//    id: pageDatis
     anchors.fill: parent
-
+//    property alias datisUpTimerRunning: datisUpTimer.running
+    property var locale: Qt.locale()
 
     GridLayout {
         id: layout
@@ -25,25 +25,19 @@ Item {
             border.color: "grey"
             color: "transparent"
 
-            ListView {
+            Text {
+                id: datisCodeText
+//                color: "#07b716"
+                font.family: "Arial"
+                font.bold: true
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                padding: 10
+                fontSizeMode: Text.VerticalFit
                 anchors.fill: parent
-                model: xmlModel
-                delegate: Text {
-                    id: datisCodeText
-                    color: "#07b716"
-                    font.family: "Arial"
-                    font.bold: true
-    //                font.pointSize: 72
-                    font.pointSize: parent.height/2
-                    anchors.centerIn: parent
-//                    text: qsTr("-")
-    //                text: xmlModel.get(0).ATISVersion
-                    text: ATISVersion
-
-                }
+                text: qsTr("-")
+                font.pointSize: 120
             }
-
-
 
             Text {
                 text: qsTr("通播代号")
@@ -52,6 +46,8 @@ Item {
                 anchors.top: parent.top
                 anchors.topMargin: 2
             }
+
+
         } // 通播版本号
 
         // 跑道号
@@ -64,24 +60,20 @@ Item {
             border.color: "grey"
             color: "transparent"
 
-            ListView {
+            Text {
+                id: rwyText
+                color: "green"
+                text: qsTr("-")
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.family: "Arial"
+                font.bold: true
+                padding: 10
+                fontSizeMode: Text.VerticalFit
+                font.pointSize: 120
+                anchors.horizontalCenter: parent.horizontalCenter
                 anchors.fill: parent
-                model: xmlModel
-                delegate: Text {
-                    id: rwyText
-                    color: "#07b716"
-                    font.family: "Arial"
-                    font.bold: true
-    //                font.pointSize: 72
-                    font.pointSize: parent.height/2
-                    anchors.centerIn: parent
-//                    text: qsTr("-")
-    //                text: xmlModel.get(0).ArrRwy
-                    text: ArrRwy
-                }
             }
-
-
 
             Text {
                 text: qsTr("跑道号")
@@ -113,20 +105,19 @@ Item {
                     anchors.topMargin: 2
                 }
 
-                ListView {
+
+                Text {
+                    id: datisTime
+                    text: qsTr("-")
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
                     anchors.fill: parent
-                    model: xmlModel
-                    delegate: Text {
-                        id: datisTime
-                        anchors.centerIn: parent
-//                        text: qsTr("-")
-    //                    text: xmlModel.get(0).UpdateTime
-                        font.pointSize: parent.height/8
-                        text: UpdateTime
-                    }
+                    font.family: "Arial"
+                    padding: 10
+                    fontSizeMode: Text.Fit
+                    font.pointSize: 120
                 }
-
-
             }
 
             // 通播号超时时间
@@ -141,7 +132,6 @@ Item {
                 color: "transparent"
 
                 Text {
-                    //                id: datisCodeRectText
                     text: qsTr("超时时间")
                     anchors.left: parent.left
                     anchors.leftMargin: 6
@@ -151,15 +141,17 @@ Item {
 
                 Text {
                     id: datisOverTime
-                    anchors.centerIn: parent
                     text: qsTr("-")
-//                    text: xmlModel.get(0).ExpiredTime
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.fill: parent
+                    font.family: "Arial"
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
-                    font.pointSize: parent.height/8
+                    padding: 10
+                    fontSizeMode: Text.Fit
+                    font.pointSize: 120
                 }
             }
-
         }
 
         // 当前时间
@@ -179,27 +171,47 @@ Item {
             }
             Text {
                 id: currentTime
-                font.pointSize: parent.height/8
+                font.pointSize: 120
                 font.family: "Arial"
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 text: qsTr("text")
-                anchors.centerIn: parent
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.fill: parent
+                padding: 10
+                fontSizeMode: Text.Fit
 
             }
+
             // 定时器，0.5s，刷新时间
             Timer {
                 interval: 500; running: true; repeat: true;
-//                var date = new Date();
-                onTriggered: currentTime.text = Qt.formatDate(new Date(), "yyyy-MM-dd") + "\n" + Qt.formatTime(new Date(), "hh:mm:ss");
+                onTriggered: {
+                    var date = new Date();
+                    currentTime.text = Qt.formatDate(date, "yyyy-MM-dd") + "\n" + Qt.formatTime(date, "hh:mm:ss");
+                    var datisExpiredTime = Date.fromLocaleString(locale, datisOverTime.text, "yyyy-MM-dd hh:mm:ss");
+//                    console.log(datisExpiredTime)
+                    if(date > datisExpiredTime){
+                        datisCodeText.color = "red"
+                    }
+                    else {
+                        datisCodeText.color = "green"
+                    }
+                }
                 triggeredOnStart: true
-//                onTriggered: currentTime.text = Date().toString();
             }
+
         }
     }
 
 
 
+    function loadDatisMessage() {
+        datisCodeText.text = xmlModel.get(0).ATISVersion;
+        rwyText.text = xmlModel.get(0).ArrRwy;
+        datisTime.text = xmlModel.get(0).UpdateTime;
+        datisOverTime.text = xmlModel.get(0).ExpiredTime;
+    }
 
 
 

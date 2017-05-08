@@ -12,6 +12,7 @@ import QtGraphicalEffects 1.0
 ApplicationWindow {
     id: rootWindow
     visible: true
+    visibility: "Maximized"
     width: 800
     height: 600
     title: qsTr("DATIS Code Viewer")
@@ -35,7 +36,17 @@ ApplicationWindow {
 
     Page1 {
         id: page1
-//        anchors.fill: parent
+        Rectangle {
+            anchors.fill: parent
+            color: "grey"
+            opacity: 0.3
+            visible: page1BusyIndicator.running
+        }
+        BusyIndicator {
+            id: page1BusyIndicator
+            anchors.centerIn: parent
+        }
+
     }
 
 
@@ -84,7 +95,6 @@ ApplicationWindow {
     XmlListModel {
         id: xmlModel
         // source:
-
         query: "/ACARS/Body"
         XmlRole { name:"ATISVersion"; query:"@ATISVersion/string()" }
         XmlRole { name:"UpdateTime"; query: "@UpdateTime/string()" }
@@ -92,6 +102,23 @@ ApplicationWindow {
         XmlRole { name:"DepRwy"; query:"Receiver/nd[2]/@DepRwy/number()" }
         XmlRole { name:"ArrRwy"; query:"Receiver/nd[2]/@ArrRwy/number()" }
         XmlRole { name:"approach"; query:"Receiver/nd[8]/@type/string()" }
+
+        onStatusChanged: {
+            if(status == XmlListModel.Ready) {
+                page1.loadDatisMessage();
+                page1BusyIndicator.running = false;
+                xmlReloadTimer.start();
+            }
+        }
+    }
+
+    Timer {
+        id: xmlReloadTimer
+//        repeat: true
+//        triggeredOnStart: true
+        onTriggered: {
+            xmlModel.reload();
+        }
     }
 
 }

@@ -70,6 +70,14 @@ ColumnLayout {
                 placeholderText: "FTP路径"
                 width: popupCl.width
             }
+            Rectangle {
+                height: 20
+                Text {
+                    text: "Message.xml所在路径<br>eg. 172.187.17.106/DATIS/Data/"
+                }
+            }
+
+
             TextField {
                 id: ftpUser
                 placeholderText: "用户名"
@@ -84,39 +92,47 @@ ColumnLayout {
             Button {
                 text: "载入"
                 onClicked: {
-
-                        var str = String(ftpPath.text);
-                        if(str.slice(0,8)!="ftp://")str = "ftp://" + str;
-                        xmlModel.source = str;
-
-
-                    xmlModel.reload();
+                    page1BusyIndicator.running = true;
+                    var str = "ftp://"
+                    //  ftp://user:password@host:port/path
+//                    if(ftpPath.text.slice(0,8)!="ftp://" )
+                    if(ftpUser.text.length) {
+                        str = "ftp://" + ftpUser.text + ":" + ftpPW.text + "@" + ftpPath.text + "Message.xml";
+                    }
+                    else {
+                        str = "ftp://" + ftpPath.text + "Message.xml";
+                    }
+//                    text = "载入"
+                    xmlModel.source = str;
+//                    console.log(str)
+//                    xmlModel.reload();
+//                    console.log("ftpUser ", ftpUser.text, "ftpPW", ftpPW.text)
                 }
             }
 
         }
 
         // 本地文件
-//        Row {
-//            spacing: 5
-//            TextField {
-//                id: localPath
-//                placeholderText: "本地文件"
-//                width: parent.width * 0.6
-//            }
         Item {
             height: ftpInfo.height
             Button {
                 id: openFileButton
-                text: "打开本地文件"
+                Text {
+                    id: openFileButtonText
+                    anchors.fill: parent
+                    text: "打开本地文件"
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    elide: Text.ElideMiddle
+
+                }
                 width:  parent.width
                 height: 40
                 onClicked: {
                     fileDialog.open();
-
+                    page1BusyIndicator.running = true;
                 }
             }
-//        }
         }
     } // StackLayout
 
@@ -130,11 +146,17 @@ ColumnLayout {
 
     Rectangle {
         Layout.fillWidth:  true
-        height: 200
-//        Layout.fillHeight: true
+        Layout.minimumHeight: 200
+        Layout.fillHeight: true
         Text {
-            text: "<h1>关于DatisCodeViewer<h1><br><div>作者：carlnerv<br>反馈
-<br>使用库：Qt 5.8</div>"
+            anchors.fill: parent
+            fontSizeMode: Text.Fit
+            text: "<h1>关于Datis Code Viewer</h1><br><p><b>Version 1.0</b><br>
+使用 Qt 5.8</p>
+<p>Copyright © 2017 carlnerv</p>
+<p>License: <a href=''>MIT License</a><br>
+Project Hosted at <a href='https://github.com/carlnerv/DatisCodeViewer'>GitHub</a></p>"
+            onLinkActivated: Qt.openUrlExternally("https://github.com/carlnerv/DatisCodeViewer")
         }
     }
 
@@ -144,12 +166,9 @@ ColumnLayout {
         nameFilters: [ "Message文件 (Message.xml)" ]
         onAccepted: {
             var furl = String(fileUrl);
-            openFileButton.text = furl.slice(8); // 切掉file://，从第8个字符开始
+            openFileButtonText.text = furl.slice(8); // 切掉file://，从第8个字符开始
             xmlModel.source = fileUrl;
-//            page1.datisVersion = xmlModel.get(0).ATISVersion;
-//            page1.rwyText = xmlModel.get(0).ArrRwy;
-//            page1.datisTime = xmlModel.get(0).UpdateTime;
-//            page1.datisOverTime = xmlModel.get(0).ExpiredTime;
+//            xmlReloadTimer.start();
             close();
         }
         onRejected: {
