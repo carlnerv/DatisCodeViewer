@@ -9,7 +9,8 @@ ColumnLayout {
     id: popupCl
     anchors.fill: parent
 
-//    property alias stackIndex: stackLayout.currentIndex
+    property alias stackIndex: stackLayout.currentIndex
+    property alias tabBarIndex: tabBar.currentIndex
 //    property alias ftpSource: ftpPath.text
 //    property alias localFileSource: fileDialog.fileUrl
 
@@ -73,7 +74,7 @@ ColumnLayout {
             Rectangle {
                 height: 20
                 Text {
-                    text: "Message.xml所在路径<br>eg. 172.187.17.106/DATIS/Data/"
+                    text: "Message.xml所在的FTP路径<br>eg. 172.187.17.106/DATIS/Data"
                 }
             }
 
@@ -100,7 +101,7 @@ ColumnLayout {
                         str = "ftp://" + ftpUser.text + ":" + ftpPW.text + "@" + ftpPath.text + "Message.xml";
                     }
                     else {
-                        str = "ftp://" + ftpPath.text + "Message.xml";
+                        str = "ftp://" + ftpPath.text + "/Message.xml";
                     }
 //                    text = "载入"
                     xmlModel.source = str;

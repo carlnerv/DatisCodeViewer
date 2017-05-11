@@ -30,6 +30,7 @@ ApplicationWindow {
             }
             onClicked:  {
                 popup.visible ? popup.close(): popup.open();
+//                console.log(popPage.stackIndex,", ",popPage.tabBarIndex)
             }
         }
     }
@@ -87,6 +88,10 @@ ApplicationWindow {
 
         PopupPage {
             id: popPage
+        }
+
+        onClosed: {
+
         }
 
 

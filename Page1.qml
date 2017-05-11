@@ -4,7 +4,6 @@ import QtQml 2.2
 
 Item {
     anchors.fill: parent
-//    property alias datisUpTimerRunning: datisUpTimer.running
     property var locale: Qt.locale()
 
     GridLayout {
