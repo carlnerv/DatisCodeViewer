@@ -9,10 +9,10 @@ ColumnLayout {
     id: popupCl
     anchors.fill: parent
 
-//    property alias stackIndex: stackLayout.currentIndex
-//    property alias tabBarIndex: tabBar.currentIndex
-    property alias ftpSource: ftpPath.text
-    property alias localFileSource: openFileButton.text
+    property alias stackIndex: stackLayout.currentIndex
+    property alias tabBarIndex: tabBar.currentIndex
+//    property alias ftpSource: ftpPath.text
+//    property alias localFileSource: fileDialog.fileUrl
 
     TabBar {
         id: tabBar
@@ -177,31 +177,6 @@ Project Hosted at <a href='https://github.com/carlnerv/DatisCodeViewer'>GitHub</
         }
     }
 
-    Connections {
-        target: rootWindow
-        Component.onCompleted: {
-            if(conf.loadConf()) {
-                xmlModel.source = conf.xmlSourceUri
-    //            popPage.stackIndex = conf.tabIndex
-    //            popPage.tabBarIndex = conf.tabIndex
-                tabBar.setCurrentIndex(conf.tabIndex)
-                switch (conf.tabIndex){
-                case 0:
-//                    popPage.ftpSource = conf.xmlSourceUri
-                    ftpPath.text = conf.xmlSourceUri
-
-                    break;
-                case 1:
-//                    popPage.localFileSource = conf.xmlSourceUri
-                    openFileButton.text = conf.xmlSourceUri
-    //                break;
-                }
-            }
-        }
-    }
-
 } // columnLayout
-
-
 
 
