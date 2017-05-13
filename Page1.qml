@@ -8,8 +8,8 @@ Item {
 
     GridLayout {
         id: layout
-        rows: 2
-        columns: 2
+        rows: 3
+//        columns: 3
         anchors.margins: 5
         anchors.fill: parent
         flow: GridLayout.TopToBottom
@@ -18,8 +18,14 @@ Item {
         Rectangle {
             id: datisCodeRect
             // 使用Layout布局则使用Layout宽高，另有最大最小宽高
-            Layout.preferredHeight: parent.height * 0.6
-            Layout.preferredWidth: parent.width * 0.6
+//            Layout.preferredHeight: parent.height * 0.3
+//            Layout.preferredWidth: parent.width * 0.3
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.minimumHeight: 100
+            Layout.minimumWidth: 100
+//            implicitHeight: 100
+//            implicitWidth: 100
             border.width: 1
             border.color: "grey"
             color: "transparent"
@@ -53,8 +59,12 @@ Item {
         Rectangle {
             id: rwyRect
             // 相对高度
-            Layout.preferredHeight: parent.height - datisCodeRect.height - parent.columnSpacing
-            Layout.preferredWidth: datisCodeRect.width
+//            Layout.preferredHeight: parent.height - datisCodeRect.height - parent.columnSpacing
+//            Layout.preferredWidth: datisCodeRect.width
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.minimumHeight: 100
+            Layout.minimumWidth: 100
             border.width: 1
             border.color: "grey"
             color: "transparent"
@@ -83,81 +93,15 @@ Item {
             }
         } // 跑道号
 
-        // GridLayout 3
-        ColumnLayout {
-            // 通播号更新时间
-            Rectangle {
-                id: datisTimeRect
-                // 左边控件定义了宽度，这里填满剩下的宽度
-                Layout.fillHeight: true
-                // 左边控件定义了高度，这里为左边控件的高度
-                Layout.fillWidth: true
-                border.width: 1
-                border.color: "grey"
-                color: "transparent"
-
-                Text {
-                    text: qsTr("更新时间")
-                    anchors.left: parent.left
-                    anchors.leftMargin: 6
-                    anchors.top: parent.top
-                    anchors.topMargin: 2
-                }
-
-
-                Text {
-                    id: datisTime
-                    text: qsTr("-")
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.fill: parent
-                    font.family: "Arial"
-                    padding: 10
-                    fontSizeMode: Text.Fit
-                    font.pointSize: 120
-                }
-            }
-
-            // 通播号超时时间
-            Rectangle {
-                id: datisOverTimeRect
-                // 左边控件定义了宽度，这里填满剩下的宽度
-                Layout.fillHeight: true
-                // 左边控件定义了高度，这里为左边控件的高度
-                Layout.fillWidth: true
-                border.width: 1
-                border.color: "grey"
-                color: "transparent"
-
-                Text {
-                    text: qsTr("超时时间")
-                    anchors.left: parent.left
-                    anchors.leftMargin: 6
-                    anchors.top: parent.top
-                    anchors.topMargin: 2
-                }
-
-                Text {
-                    id: datisOverTime
-                    text: qsTr("-")
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.fill: parent
-                    font.family: "Arial"
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    padding: 10
-                    fontSizeMode: Text.Fit
-                    font.pointSize: 120
-                }
-            }
-        }
+        // GridLayout 2
 
         // 当前时间
         Rectangle {
             id: timeRect
             Layout.fillHeight: true
             Layout.fillWidth: true
+            Layout.minimumHeight: 100
+            Layout.minimumWidth: 100
             border.width: 1
             border.color: "grey"
             color: "transparent"
@@ -201,6 +145,86 @@ Item {
             }
 
         }
+
+        // GridLayout 3
+        Rectangle {
+            Layout.rowSpan: 3
+//            Layout.columnSpan: 2
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.minimumHeight: 100
+//            Layout.minimumWidth: 100
+            Layout.preferredWidth: parent.width * 0.66
+
+            border.color: "grey"
+            border.width: 1
+            GridLayout {
+                anchors.fill: parent
+                anchors.margins: 5
+
+                rowSpacing: 2
+                columns: 2
+
+                // row0
+                Text {
+                    text: "更新时间"
+                }
+
+                Text {
+                    id: datisTime
+                    text: qsTr("-")
+    //                verticalAlignment: Text.AlignVCenter
+    //                horizontalAlignment: Text.AlignHCenter
+    //                anchors.horizontalCenter: parent.horizontalCenter
+    //                anchors.fill: parent
+    //                font.family: "Arial"
+    //                padding: 10
+    //                fontSizeMode: Text.Fit
+    //                font.pointSize: 120
+                }
+
+                // row1
+                Text {
+                    text: qsTr("超时时间")
+    //                anchors.left: parent.left
+    //                anchors.leftMargin: 6
+    //                anchors.top: parent.top
+    //                anchors.topMargin: 2
+                }
+
+                Text {
+                    id: datisOverTime
+                    text: qsTr("-")
+    //                anchors.horizontalCenter: parent.horizontalCenter
+    //                anchors.fill: parent
+//                    font.family: "Arial"
+    //                verticalAlignment: Text.AlignVCenter
+    //                horizontalAlignment: Text.AlignHCenter
+    //                padding: 10
+    //                fontSizeMode: Text.Fit
+    //                font.pointSize: 120
+                }
+
+                // row2
+
+                // row3
+
+                // row4
+
+                // row5
+
+                // row6
+
+                // row7
+
+                // row8
+
+            }
+
+        }
+
+
+
     }
 
 
