@@ -1,9 +1,13 @@
 TEMPLATE = app
 
-QT += qml quick
+# QGuiApplication gui
+# QQmlApplicationEngine qml
+# QQmlContext qml
+QT += qml gui quick
 CONFIG += c++11
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    Conf.cpp
 
 RESOURCES += qml.qrc
 
@@ -34,3 +38,6 @@ DISTFILES += \
     content/q.ico
 
 RC_ICONS = content/q.ico
+
+HEADERS += \
+    Conf.h
