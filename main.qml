@@ -196,27 +196,9 @@ ApplicationWindow {
 
     Timer {
         id: xmlReloadTimer
-//        repeat: true
-//        triggeredOnStart: true
         onTriggered: {
             xmlModel.reload();
         }
     }
-
-//    Component.onCompleted: {
-//        if(conf.loadConf()) {
-//            xmlModel.source = conf.xmlSourceUri
-////            popPage.stackIndex = conf.tabIndex
-////            popPage.tabBarIndex = conf.tabIndex
-//            switch (conf.tabIndex){
-//            case 0:
-//                popPage.ftpSource = conf.xmlSourceUri
-//                break;
-//            case 1:
-//                popPage.localFileSource = conf.xmlSourceUri
-////                break;
-//            }
-//        }
-//    }
 
 }

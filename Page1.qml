@@ -7,7 +7,7 @@ Item {
     property var locale: Qt.locale()
 
     GridLayout {
-        id: layout
+//        id: layout
         rows: 3
 //        columns: 3
         anchors.margins: 5
@@ -16,10 +16,10 @@ Item {
 
         // 通播版本号
         Rectangle {
-            id: datisCodeRect
+//            id: datisCodeRect
             // 使用Layout布局则使用Layout宽高，另有最大最小宽高
 //            Layout.preferredHeight: parent.height * 0.3
-//            Layout.preferredWidth: parent.width * 0.3
+            Layout.preferredWidth: parent.width * 0.3
             Layout.fillHeight: true
             Layout.fillWidth: true
             Layout.minimumHeight: 100
@@ -29,16 +29,17 @@ Item {
             border.width: 1
             border.color: "grey"
             color: "transparent"
+            Layout.preferredHeight: parent.height * 0.3
 
             Text {
-                id: datisCodeText
+                id: tATISVersion
 //                color: "#07b716"
                 font.family: "Arial"
                 font.bold: true
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 padding: 10
-                fontSizeMode: Text.VerticalFit
+                fontSizeMode: Text.Fit
                 anchors.fill: parent
                 text: qsTr("-")
                 font.pointSize: 120
@@ -57,7 +58,7 @@ Item {
 
         // 跑道号
         Rectangle {
-            id: rwyRect
+//            id: rwyRect
             // 相对高度
 //            Layout.preferredHeight: parent.height - datisCodeRect.height - parent.columnSpacing
 //            Layout.preferredWidth: datisCodeRect.width
@@ -68,9 +69,10 @@ Item {
             border.width: 1
             border.color: "grey"
             color: "transparent"
+            Layout.preferredHeight: parent.height * 0.3
 
             Text {
-                id: rwyText
+                id: tArrRwy
                 color: "green"
                 text: qsTr("-")
                 verticalAlignment: Text.AlignVCenter
@@ -78,7 +80,7 @@ Item {
                 font.family: "Arial"
                 font.bold: true
                 padding: 10
-                fontSizeMode: Text.VerticalFit
+                fontSizeMode: Text.Fit
                 font.pointSize: 120
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.fill: parent
@@ -97,7 +99,7 @@ Item {
 
         // 当前时间
         Rectangle {
-            id: timeRect
+//            id: timeRect
             Layout.fillHeight: true
             Layout.fillWidth: true
             Layout.minimumHeight: 100
@@ -132,13 +134,13 @@ Item {
                 onTriggered: {
                     var date = new Date();
                     currentTime.text = Qt.formatDate(date, "yyyy-MM-dd") + "\n" + Qt.formatTime(date, "hh:mm:ss");
-                    var datisExpiredTime = Date.fromLocaleString(locale, datisOverTime.text, "yyyy-MM-dd hh:mm:ss");
+                    var datisExpiredTime = Date.fromLocaleString(locale, tExpiredTime.text, "yyyy-MM-dd hh:mm:ss");
 //                    console.log(datisExpiredTime)
                     if(date > datisExpiredTime){
-                        datisCodeText.color = "red"
+                        tATISVersion.color = "red"
                     }
                     else {
-                        datisCodeText.color = "green"
+                        tATISVersion.color = "green"
                     }
                 }
                 triggeredOnStart: true
@@ -147,6 +149,7 @@ Item {
         }
 
         // GridLayout 3
+
         Rectangle {
             Layout.rowSpan: 3
 //            Layout.columnSpan: 2
@@ -158,9 +161,10 @@ Item {
 
             border.color: "grey"
             border.width: 1
+
             GridLayout {
                 anchors.fill: parent
-                anchors.margins: 5
+//                anchors.margins: 5
 
                 rowSpacing: 2
                 columns: 2
@@ -168,17 +172,20 @@ Item {
                 // row0
                 Text {
                     text: "更新时间"
+                    Layout.preferredWidth: parent.width * 0.3
+                    horizontalAlignment: Text.AlignHCenter
                 }
 
                 Text {
-                    id: datisTime
+                    id: tUpdateTime
                     text: qsTr("-")
+                    Layout.fillWidth: true
     //                verticalAlignment: Text.AlignVCenter
     //                horizontalAlignment: Text.AlignHCenter
     //                anchors.horizontalCenter: parent.horizontalCenter
     //                anchors.fill: parent
     //                font.family: "Arial"
-    //                padding: 10
+//                    padding: 10
     //                fontSizeMode: Text.Fit
     //                font.pointSize: 120
                 }
@@ -186,27 +193,31 @@ Item {
                 // row1
                 Text {
                     text: qsTr("超时时间")
-    //                anchors.left: parent.left
-    //                anchors.leftMargin: 6
-    //                anchors.top: parent.top
-    //                anchors.topMargin: 2
+                    Layout.preferredWidth: parent.width * 0.3
+                    horizontalAlignment: Text.AlignHCenter
                 }
 
                 Text {
-                    id: datisOverTime
+                    id: tExpiredTime
                     text: qsTr("-")
-    //                anchors.horizontalCenter: parent.horizontalCenter
-    //                anchors.fill: parent
-//                    font.family: "Arial"
-    //                verticalAlignment: Text.AlignVCenter
-    //                horizontalAlignment: Text.AlignHCenter
-    //                padding: 10
-    //                fontSizeMode: Text.Fit
-    //                font.pointSize: 120
+                    Layout.fillWidth: true
                 }
 
                 // row2
+                Text {
+                    text: qsTr("自由文本")
+                    Layout.preferredWidth: parent.width * 0.3
+                    horizontalAlignment: Text.AlignHCenter
+                }
 
+                Text {
+                    id: tFreeText
+                    text: qsTr("-")
+                    Layout.preferredWidth: 0
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: implicitHeight * 3
+                    wrapMode: Text.WordWrap
+                }
                 // row3
 
                 // row4
@@ -221,6 +232,7 @@ Item {
 
             }
 
+
         }
 
 
@@ -230,10 +242,11 @@ Item {
 
 
     function loadDatisMessage() {
-        datisCodeText.text = xmlModel.get(0).ATISVersion;
-        rwyText.text = xmlModel.get(0).ArrRwy;
-        datisTime.text = xmlModel.get(0).UpdateTime;
-        datisOverTime.text = xmlModel.get(0).ExpiredTime;
+        tATISVersion.text = xmlModel.get(0).ATISVersion;
+        tArrRwy.text = xmlModel.get(0).ArrRwy;
+        tUpdateTime.text = xmlModel.get(0).UpdateTime;
+        tExpiredTime.text = xmlModel.get(0).ExpiredTime;
+        tFreeText.text = xmlModel.get(0).tagUP + "\n" + xmlModel.get(0).tagCH + "\n" + xmlModel.get(0).tagEN;
     }
 
 
