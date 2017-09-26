@@ -5,5 +5,6 @@
         <file>content/menu.png</file>
         <file>content/q.ico</file>
         <file>PopupPage.qml</file>
+        <file>content/mail.ico</file>
     </qresource>
 </RCC>

@@ -86,7 +86,7 @@ ColumnLayout {
             }
             TextField {
                 id: ftpPW
-                placeholderText: "密码"
+                placeholderText: "密码";
                 echoMode: "Password"
                 width: popupCl.width
             }

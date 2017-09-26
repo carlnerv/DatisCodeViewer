@@ -12,14 +12,14 @@ Conf::~Conf()
 
 }
 
-void Conf::setXmlSourceUri(const QString &a)
+void Conf::setTextSourceUri(const QString &a)
 {
-    mXmlSourceUri = a;
+    mTextSourceUri = a;
 }
 
-QString Conf::xmlSourceUri() const
+QString Conf::textSourceUri() const
 {
-    return mXmlSourceUri;
+    return mTextSourceUri;
 }
 
 void Conf::setTabIndex(const int &a)
@@ -41,7 +41,7 @@ bool Conf::saveConf() const
     }
 
     QJsonObject confObject;
-    confObject["xmlSourceUri"] = mXmlSourceUri;
+    confObject["textSourceUri"] = mTextSourceUri;
     confObject["tabIndex"] = mTabIndex;
     QJsonDocument saveDoc(confObject);
     saveFile.write(saveDoc.toJson());
@@ -63,4 +63,32 @@ bool Conf::loadConf()
     mTabIndex = confObject["tabIndex"].toInt();
 //    emit confLoaded();
     return true;
+}
+
+QString Conf::datisText()
+{
+    return mDatisText;
+}
+
+char Conf::datisVer()
+{
+    return mDatisVer;
+}
+
+unsigned Conf::runway()
+{
+    return mRunway;
+}
+
+bool Conf::readDatisText()
+{
+    QFile file(mTextSourceUri);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    QTextStream in(&file);
+    in.setCodec("UTF-8");
+    in >> mDatisText;
+    mDatisVer = mDatisText[mDatisText.indexOf("通播")+2];
+//    mRunway = mDatisText[];
 }

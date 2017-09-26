@@ -35,9 +35,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     content/menu.png \
-    content/q.ico
+    content/q.ico \
+    content/mail.ico
 
-RC_ICONS = content/q.ico
+RC_ICONS = content/mail.ico
 
 HEADERS += \
     Conf.h
