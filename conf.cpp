@@ -1,7 +1,7 @@
 #include "Conf.h"
 
 Conf::Conf(QObject *parent) : QObject(parent)
-  ,mXmlSourceUri("")
+  ,mTextSourceUri("")
   ,mTabIndex(0)
 {
 
@@ -59,23 +59,23 @@ bool Conf::loadConf()
     QByteArray saveData = loadFile.readAll();
     QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
     QJsonObject confObject = loadDoc.object();
-    mXmlSourceUri = confObject["xmlSourceUri"].toString();
+    mTextSourceUri = confObject["textSourceUri"].toString();
     mTabIndex = confObject["tabIndex"].toInt();
 //    emit confLoaded();
     return true;
 }
 
-QString Conf::datisText()
+QString Conf::datisText() const
 {
     return mDatisText;
 }
 
-char Conf::datisVer()
+QString Conf::datisVer() const
 {
     return mDatisVer;
 }
 
-unsigned Conf::runway()
+QString Conf::runway() const
 {
     return mRunway;
 }
@@ -84,11 +84,27 @@ bool Conf::readDatisText()
 {
     QFile file(mTextSourceUri);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        return;
+        return false;
 
     QTextStream in(&file);
     in.setCodec("UTF-8");
-    in >> mDatisText;
-    mDatisVer = mDatisText[mDatisText.indexOf("通播")+2];
+    QString buf;
+    mDatisText = "";
+    while (!in.atEnd()) {
+//        in >> buf;
+        buf = in.readLine();
+//        mDatisText.append(buf);
+        mDatisText += buf;
+        mDatisText += "\n";
+    }
+
+    int it = mDatisText.indexOf(QString("通播")) + 2;
+//    it += 2;
+    mDatisVer = QChar(mDatisText[it]);
 //    mRunway = mDatisText[];
+    it = mDatisText.indexOf(QString("跑道")) + 2;
+
+    mRunway = QChar(mDatisText[it++]);
+    mRunway.append(QChar(mDatisText[it]));
+    return true;
 }

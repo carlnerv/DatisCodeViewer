@@ -91,11 +91,20 @@ ApplicationWindow {
         }
 
         onClosed: {
-            if(xmlModel.status == XmlListModel.Ready) {
-                conf.xmlSourceUri = xmlModel.source
-                conf.tabIndex = popPage.tabBarIndex
-                conf.saveConf()
-            }
+//            if(xmlModel.status == XmlListModel.Ready) {
+//                conf.xmlSourceUri = xmlModel.source
+//                conf.tabIndex = popPage.tabBarIndex
+//                conf.saveConf()
+//            }
+//            conf.textSourceUri =
+//            if (conf.readDatisText()) {
+//                page1.loadDatisMessage();
+//                page1BusyIndicator.running = false;
+//                confReloadTimer.start();
+//            }
+            confReloadTimer.start();
+            conf.tabIndex = popPage.tabBarIndex;
+            conf.saveConf();
         }
 
 
@@ -195,9 +204,25 @@ ApplicationWindow {
 //    }
 
     Timer {
-        id: xmlReloadTimer
+        id: confReloadTimer
+//        repeat: true
         onTriggered: {
-            xmlModel.reload();
+//            xmlModel.reload();
+//            conf.readDatisText();
+            if (conf.readDatisText()) {
+                page1.loadDatisMessage();
+                page1BusyIndicator.running = false;
+//                if (!repeat) {
+//                    repeat = true;
+//                    running = true;
+//                }
+                restart();
+//                confReloadTimer.start();
+            } else {
+                confReloadTimer.running = false;
+                page1BusyIndicator.running = true;
+                repeat = false;
+            }
         }
     }
 

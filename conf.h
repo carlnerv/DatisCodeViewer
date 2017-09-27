@@ -13,9 +13,9 @@ class Conf : public QObject
     Q_OBJECT
     Q_PROPERTY(QString textSourceUri READ textSourceUri WRITE setTextSourceUri)
     Q_PROPERTY(int tabIndex READ tabIndex WRITE setTabIndex)
-    Q_PROPERTY(QString datisText READ datisText NOTIFY datisTextChanged)
-    Q_PROPERTY(char datisVer READ datisVer)
-    Q_PROPERTY(unsigned runway READ runway)
+    Q_PROPERTY(QString datisText READ datisText)
+    Q_PROPERTY(QString datisVer READ datisVer)
+    Q_PROPERTY(QString runway READ runway)
 
 
 public:
@@ -31,8 +31,8 @@ public:
     Q_INVOKABLE bool loadConf();
     Q_INVOKABLE bool readDatisText();
     QString datisText() const;
-    char datisVer() const;
-    unsigned runway() const;
+    QString datisVer() const;
+    QString runway() const;
 
 signals:
 //    void confLoaded();
@@ -42,8 +42,8 @@ private:
     QString mTextSourceUri;
     int mTabIndex;
     QString mDatisText;
-    char mDatisVer;
-    unsigned mRunway;
+    QString mDatisVer;
+    QString mRunway;
 };
 
 #endif // CONF_H

@@ -72,9 +72,9 @@ ColumnLayout {
                 width: popupCl.width
             }
             Rectangle {
-                height: 20
+                height: 40
                 Text {
-                    text: "Message.xml所在的FTP路径<br>eg. 172.187.17.106/DATIS/Data"
+                    text: "Voice.ini所在的FTP路径<br>eg. 172.187.17.106/DATIS/Data/Voice.ini"
                 }
             }
 
@@ -98,13 +98,14 @@ ColumnLayout {
                     //  ftp://user:password@host:port/path
 //                    if(ftpPath.text.slice(0,8)!="ftp://" )
                     if(ftpUser.text.length) {
-                        str = "ftp://" + ftpUser.text + ":" + ftpPW.text + "@" + ftpPath.text + "Message.xml";
+                        str = "ftp://" + ftpUser.text + ":" + ftpPW.text + "@" + ftpPath.text/* + "Message.xml"*/;
                     }
                     else {
-                        str = "ftp://" + ftpPath.text + "/Message.xml";
+                        str = "ftp://" + ftpPath.text/* + "/Message.xml"*/;
                     }
 //                    text = "载入"
-                    xmlModel.source = str;
+//                    xmlModel.source = str;
+                    conf.textSourceUri = str;
 //                    console.log(str)
 //                    xmlModel.reload();
 //                    console.log("ftpUser ", ftpUser.text, "ftpPW", ftpPW.text)
@@ -152,7 +153,7 @@ ColumnLayout {
         Text {
             anchors.fill: parent
             fontSizeMode: Text.Fit
-            text: "<h1>关于Datis Code Viewer</h1><br><p><b>Version 1.0</b><br>
+            text: "<h1>关于Datis Code Viewer</h1><br><p><b>Version 1.0.1</b><br>
 使用 Qt 5.8</p>
 <p>Copyright © 2017 carlnerv</p>
 <p>License: <a href=''>MIT License</a><br>
@@ -163,12 +164,17 @@ Project Hosted at <a href='https://github.com/carlnerv/DatisCodeViewer'>GitHub</
 
     FileDialog {
         id: fileDialog
-        title: "打开Message.xml文件"
-        nameFilters: [ "Message文件 (Message.xml)" ]
+        title: "打开Voice.ini文件"
+        nameFilters: [ "Voice.ini文件 (Voice.ini)" ]
         onAccepted: {
             var furl = String(fileUrl);
-            openFileButtonText.text = furl.slice(8); // 切掉file://，从第8个字符开始
-            xmlModel.source = fileUrl;
+            furl = furl.slice(8);
+//            openFileButtonText.text = furl.slice(8); // 切掉file://，从第8个字符开始
+            openFileButtonText.text = furl;
+//            xmlModel.source = fileUrl;
+//            conf.textSourceUri = fileUrl;
+//            conf.textSourceUri = furl.slice(8);
+            conf.textSourceUri = furl;
 //            xmlReloadTimer.start();
             close();
         }
@@ -181,17 +187,20 @@ Project Hosted at <a href='https://github.com/carlnerv/DatisCodeViewer'>GitHub</
         target: rootWindow
         Component.onCompleted: {
             if(conf.loadConf()) {
-                xmlModel.source = conf.xmlSourceUri
+//                xmlModel.source = conf.xmlSourceUri
                 tabBar.setCurrentIndex(conf.tabIndex)
                 switch (conf.tabIndex){
                 case 0:
-                    ftpPath.text = conf.xmlSourceUri
+//                    ftpPath.text = conf.xmlSourceUri
+                    ftpPath.text = conf.textSourceUri
 
                     break;
                 case 1:
-                    openFileButtonText.text = conf.xmlSourceUri
+//                    openFileButtonText.text = conf.xmlSourceUri
+                    openFileButtonText.text = conf.textSourceUri
     //                break;
                 }
+                confReloadTimer.start();
             }
         }
     }
