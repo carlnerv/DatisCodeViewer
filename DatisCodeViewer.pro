@@ -7,7 +7,8 @@ QT += qml gui quick
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    Conf.cpp
+    Conf.cpp \
+    ftpmanager.cpp
 
 RESOURCES += qml.qrc
 
@@ -41,4 +42,5 @@ DISTFILES += \
 RC_ICONS = content/mail.ico
 
 HEADERS += \
-    Conf.h
+    Conf.h \
+    ftpmanager.h

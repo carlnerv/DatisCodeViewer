@@ -268,6 +268,16 @@ Item {
         tATISVersion.text = conf.datisVer;
         tArrRwy.text = conf.runway;
         tDatisText.text = conf.datisText;
+        var time = new Date();
+//        console.log(time);
+//        var datisExpiredTime = Date.fromLocaleString(locale, tExpiredTime.text, "yyyy-MM-dd hh:mm:ss");
+        //                    console.log(datisExpiredTime)
+        if(time > Date.fromLocaleString(locale, conf.datisTime, "yyyy-MM-dd hh:mm:ss")){
+            tATISVersion.color = "red"
+        }
+        else {
+            tATISVersion.color = "green"
+        }
 
     }
 

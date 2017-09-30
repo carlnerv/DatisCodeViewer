@@ -7,6 +7,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QTextStream>
+#include "ftpmanager.h"
 
 class Conf : public QObject
 {
@@ -16,6 +17,7 @@ class Conf : public QObject
     Q_PROPERTY(QString datisText READ datisText)
     Q_PROPERTY(QString datisVer READ datisVer)
     Q_PROPERTY(QString runway READ runway)
+    Q_PROPERTY(QString datisTime READ datisTime)
 
 
 public:
@@ -29,10 +31,14 @@ public:
     int tabIndex() const;
     Q_INVOKABLE bool saveConf() const;
     Q_INVOKABLE bool loadConf();
-    Q_INVOKABLE bool readDatisText();
+    Q_INVOKABLE bool readFile();
+    Q_INVOKABLE bool readDatisText(QFile &file);
+    Q_INVOKABLE bool readDatisInfo(QFile &file);
+    Q_INVOKABLE void download(const QString &path, const QString &fileName);
     QString datisText() const;
     QString datisVer() const;
     QString runway() const;
+    QString datisTime() const;
 
 signals:
 //    void confLoaded();
@@ -44,6 +50,9 @@ private:
     QString mDatisText;
     QString mDatisVer;
     QString mRunway;
+    QString mDatisTime;
+
+    FtpManager mFtp;
 };
 
 #endif // CONF_H

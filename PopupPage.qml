@@ -11,8 +11,8 @@ ColumnLayout {
 
 //    property alias stackIndex: stackLayout.currentIndex
     property alias tabBarIndex: tabBar.currentIndex
-    property alias ftpSource: ftpPath.text
-    property alias localFileSource: openFileButton.text
+//    property alias ftpSource: ftpPath.text
+//    property alias localFileSource: openFileButton.text
 
     TabBar {
         id: tabBar
@@ -72,41 +72,43 @@ ColumnLayout {
                 width: popupCl.width
             }
             Rectangle {
-                height: 40
+                height: 80
                 Text {
-                    text: "Voice.ini所在的FTP路径<br>eg. 172.187.17.106/DATIS/Data/Voice.ini"
+                    text: "Datis输出文件所在的FTP路径<br>eg. ftp://[user:password@]172.187.17.106/DATIS/Data/"
                 }
             }
 
 
-            TextField {
-                id: ftpUser
-                placeholderText: "用户名"
-                width: popupCl.width
-            }
-            TextField {
-                id: ftpPW
-                placeholderText: "密码";
-                echoMode: "Password"
-                width: popupCl.width
-            }
+//            TextField {
+//                id: ftpUser
+//                placeholderText: "用户名"
+//                width: popupCl.width
+//            }
+//            TextField {
+//                id: ftpPW
+//                placeholderText: "密码";
+//                echoMode: "Password"
+//                width: popupCl.width
+//            }
             Button {
                 text: "载入"
                 onClicked: {
                     page1BusyIndicator.running = true;
-                    var str = "ftp://"
-                    //  ftp://user:password@host:port/path
-//                    if(ftpPath.text.slice(0,8)!="ftp://" )
-                    if(ftpUser.text.length) {
-                        str = "ftp://" + ftpUser.text + ":" + ftpPW.text + "@" + ftpPath.text/* + "Message.xml"*/;
-                    }
-                    else {
-                        str = "ftp://" + ftpPath.text/* + "/Message.xml"*/;
-                    }
+//                    var str = "ftp://"
+//                    //  ftp://user:password@host:port/path
+////                    if(ftpPath.text.slice(0,8)!="ftp://" )
+//                    if(ftpUser.text.length) {
+//                        str = "ftp://" + ftpUser.text + ":" + ftpPW.text + "@" + ftpPath.text/* + "Message.xml"*/;
+//                    }
+//                    else {
+//                        str = "ftp://" + ftpPath.text/* + "/Message.xml"*/;
+//                    }
 //                    text = "载入"
 //                    xmlModel.source = str;
-                    conf.textSourceUri = str;
-//                    console.log(str)
+//                    conf.textSourceUri = str;
+//                    console.log(str);
+                    conf.textSourceUri = ftpPath.text;
+                    console.log(conf.textSourceUri);
 //                    xmlModel.reload();
 //                    console.log("ftpUser ", ftpUser.text, "ftpPW", ftpPW.text)
                 }
@@ -131,6 +133,7 @@ ColumnLayout {
                 width:  parent.width
                 height: 40
                 onClicked: {
+                    fileDialog.selectFolder = true;
                     fileDialog.open();
                     page1BusyIndicator.running = true;
                 }
@@ -164,17 +167,20 @@ Project Hosted at <a href='https://github.com/carlnerv/DatisCodeViewer'>GitHub</
 
     FileDialog {
         id: fileDialog
-        title: "打开Voice.ini文件"
-        nameFilters: [ "Voice.ini文件 (Voice.ini)" ]
+        title: "打开datis目录"
+//        nameFilters: [ "Voice.ini文件 (Voice.ini)" ]
+//        selectFolder: ture
         onAccepted: {
             var furl = String(fileUrl);
             furl = furl.slice(8);
+            furl += "/";
 //            openFileButtonText.text = furl.slice(8); // 切掉file://，从第8个字符开始
             openFileButtonText.text = furl;
 //            xmlModel.source = fileUrl;
 //            conf.textSourceUri = fileUrl;
 //            conf.textSourceUri = furl.slice(8);
             conf.textSourceUri = furl;
+            console.log(furl);
 //            xmlReloadTimer.start();
             close();
         }
