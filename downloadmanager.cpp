@@ -32,15 +32,15 @@ QString DownloadManager::saveFileName(const QUrl &url)
     if (basename.isEmpty())
         basename = "download";
 
-    if (QFile::exists(basename)) {
-        // already exists, don't overwrite
-        int i = 0;
-        basename += '.';
-        while (QFile::exists(basename + QString::number(i)))
-            ++i;
+//    if (QFile::exists(basename)) {
+//        // already exists, don't overwrite
+//        int i = 0;
+//        basename += '.';
+//        while (QFile::exists(basename + QString::number(i)))
+//            ++i;
 
-        basename += QString::number(i);
-    }
+//        basename += QString::number(i);
+//    }
 
     return basename;
 }
@@ -109,7 +109,8 @@ void DownloadManager::downloadFinished(QNetworkReply *reply)
     currentDownloads.removeAll(reply);
     reply->deleteLater();
 
-//    if (currentDownloads.isEmpty())
+    if (currentDownloads.isEmpty())
 //        // all downloads finished
+        emit downloadCompleted();
 //        QCoreApplication::instance()->quit();
 }

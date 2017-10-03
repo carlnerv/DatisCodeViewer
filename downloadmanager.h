@@ -40,9 +40,12 @@ class DownloadManager: public QObject
 
 public:
     DownloadManager();
-    void doDownload(const QUrl &url);
+    Q_INVOKABLE void doDownload(const QUrl &url);
     QString saveFileName(const QUrl &url);
     bool saveToDisk(const QString &filename, QIODevice *data);
+
+signals:
+    void downloadCompleted();
 
 public slots:
 //    void execute();
