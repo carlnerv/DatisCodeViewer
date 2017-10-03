@@ -107,8 +107,8 @@ ColumnLayout {
 //                    xmlModel.source = str;
 //                    conf.textSourceUri = str;
 //                    console.log(str);
-                    conf.textSourceUri = ftpPath.text;
-                    console.log(conf.textSourceUri);
+                    conf.datisSourceUrl = ftpPath.text;
+                    console.log(conf.datisSourceUrl);
 //                    xmlModel.reload();
 //                    console.log("ftpUser ", ftpUser.text, "ftpPW", ftpPW.text)
                 }
@@ -179,7 +179,7 @@ Project Hosted at <a href='https://github.com/carlnerv/DatisCodeViewer'>GitHub</
 //            xmlModel.source = fileUrl;
 //            conf.textSourceUri = fileUrl;
 //            conf.textSourceUri = furl.slice(8);
-            conf.textSourceUri = furl;
+            conf.datisSourceUrl = fileUrl;
             console.log(furl);
 //            xmlReloadTimer.start();
             close();
@@ -198,12 +198,12 @@ Project Hosted at <a href='https://github.com/carlnerv/DatisCodeViewer'>GitHub</
                 switch (conf.tabIndex){
                 case 0:
 //                    ftpPath.text = conf.xmlSourceUri
-                    ftpPath.text = conf.textSourceUri
+                    ftpPath.text = conf.datisSourceUrl
 
                     break;
                 case 1:
 //                    openFileButtonText.text = conf.xmlSourceUri
-                    openFileButtonText.text = conf.textSourceUri
+                    openFileButtonText.text = conf.datisSourceUrl
     //                break;
                 }
                 confReloadTimer.start();

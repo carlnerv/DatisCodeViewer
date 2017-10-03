@@ -258,6 +258,11 @@ Item {
 //        triggeredOnStart: true
 //    }
 
+    Connections {
+       target: conf
+
+    }
+
     function loadDatisMessage() {
 //        tATISVersion.text = xmlModel.get(0).ATISVersion;
 //        tArrRwy.text = xmlModel.get(0).ArrRwy;

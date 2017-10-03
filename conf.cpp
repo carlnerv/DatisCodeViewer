@@ -1,8 +1,8 @@
 #include "Conf.h"
 
 Conf::Conf(QObject *parent) : QObject(parent)
-  ,mTextSourceUri("")
-  ,mTabIndex(0)
+//  ,mTextSourceUri("")
+//  ,mTabIndex(0)
 {
 
 }
@@ -12,14 +12,14 @@ Conf::~Conf()
 
 }
 
-void Conf::setTextSourceUri(const QString &a)
+void Conf::setDatisSourceUrl(const QUrl &a)
 {
-    mTextSourceUri = a;
+    mDatisSourceUrl = a;
 }
 
-QString Conf::textSourceUri() const
+QUrl Conf::datisSourceUrl() const
 {
-    return mTextSourceUri;
+    return mDatisSourceUrl;
 }
 
 void Conf::setTabIndex(const int &a)
@@ -41,7 +41,7 @@ bool Conf::saveConf() const
     }
 
     QJsonObject confObject;
-    confObject["textSourceUri"] = mTextSourceUri;
+    confObject["datisSourceUri"] = mDatisSourceUrl.toString();
     confObject["tabIndex"] = mTabIndex;
     QJsonDocument saveDoc(confObject);
     saveFile.write(saveDoc.toJson());
@@ -59,7 +59,7 @@ bool Conf::loadConf()
     QByteArray saveData = loadFile.readAll();
     QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
     QJsonObject confObject = loadDoc.object();
-    mTextSourceUri = confObject["textSourceUri"].toString();
+    mDatisSourceUrl.setUrl(confObject["datisSourceUri"].toString());
     mTabIndex = confObject["tabIndex"].toInt();
 //    emit confLoaded();
     return true;
@@ -85,40 +85,34 @@ QString Conf::datisTime() const
     return mDatisTime;
 }
 
-void Conf::download(const QString &path, const QString &fileName)
+bool Conf::readFtpFile()
 {
-    mFtp.get(path, fileName);
-    connect(&mFtp, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(error(QNetworkReply::NetworkError)));
+    readFile(QDir::currentPath());
+    return true;
 }
 
-bool Conf::readFile()
+//void Conf::download(const QString &path, const QString &fileName)
+//{
+//    mFtp.get(path, fileName);
+//    connect(&mFtp, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(error(QNetworkReply::NetworkError)));
+//}
+
+bool Conf::readLocalFile()
 {
-    QString sourceUri;
-    if (!mTextSourceUri.startsWith("ftp"))
-        sourceUri = mTextSourceUri;
-    else {
-        mFtp.setHostPort(mTextSourceUri.mid(5,mTextSourceUri.indexOf('/',6) - 5));
-        sourceUri = mTextSourceUri.mid(mTextSourceUri.indexOf('/', 6) - 1);
-//        mFtp.get(QString(sourceUri + "datis.ini"), "datis.ini");
-//        mFtp.get(QString(sourceUri + "Voice.ini"), "Voice.ini");
-        download(QString(sourceUri + "datis.ini"), "datis.ini");
-        download(QString(sourceUri + "Voice.ini"), "Voice.ini");
-        sourceUri.clear();
-    }
-
-    QFile file(QString(sourceUri + "datis.ini"));    // datis.ini
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        return false;
-
-    readDatisInfo(file);
-    file.close();
-
-    QFile file2(QString(sourceUri + "Voice.ini"));    // Voice.ini
-    if (!file2.open(QIODevice::ReadOnly | QIODevice::Text))
-        return false;
-
-    readDatisText(file2);
-    file2.close();
+//    QString sourceUri;
+//    if (!mTextSourceUri.startsWith("ftp"))
+//        sourceUri = mTextSourceUri;
+//    else {
+////        mFtp.setHostPort(mTextSourceUri.mid(5,mTextSourceUri.indexOf('/',6) - 5));
+////        sourceUri = mTextSourceUri.mid(mTextSourceUri.indexOf('/', 6) - 1);
+////        mFtp.get(QString(sourceUri + "datis.ini"), "datis.ini");
+////        mFtp.get(QString(sourceUri + "Voice.ini"), "Voice.ini");
+////        download(QString(sourceUri + "datis.ini"), "datis.ini");
+////        download(QString(sourceUri + "Voice.ini"), "Voice.ini");
+//        if (!sourceUri.isEmpty())
+//            sourceUri.clear();
+//    }
+    readFile(mDatisSourceUrl.toLocalFile());
     return true;
 }
 
@@ -180,3 +174,44 @@ bool Conf::readDatisInfo(QFile &file)
     file.close();
     return true;
 }
+
+bool Conf::readFile(const QString &path)
+{
+    QFile file(QString(path + "datis.ini"));    // datis.ini
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return false;
+
+    readDatisInfo(file);
+    file.close();
+
+    QFile file2(QString(path + "Voice.ini"));    // Voice.ini
+    if (!file2.open(QIODevice::ReadOnly | QIODevice::Text))
+        return false;
+
+    readDatisText(file2);
+    file2.close();
+//    emit datisTextChanged(mDatisText);
+    emit datisTextChanged();
+    return true;
+}
+
+//void Conf::error(QNetworkReply::NetworkError error)
+//{
+//    switch (error) {
+//    case QNetworkReply::HostNotFoundError :
+//        qDebug() << QString::fromLocal8Bit("主机没有找到");
+//        break;
+//        // 其他错误处理
+//    default:
+//        break;
+//    }
+//}
+
+//void Conf::download(const QString &path, const QString &fileName)
+//{
+//    FtpManager m_ftp;
+//    m_ftp.setSource(path);
+//    m_ftp.get(fileName);
+//    connect(&m_ftp, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(error(QNetworkReply::NetworkError)));
+////    connect(&m_ftp, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgress(qint64, qint64)));
+//}

@@ -9,6 +9,9 @@ import QtQuick.Layouts 1.3
 import QtQuick.XmlListModel 2.0
 import QtGraphicalEffects 1.0
 
+import com.mycompany.conf 1.0
+//import com.mycompany.ftpmanager 1.0
+
 ApplicationWindow {
     id: rootWindow
     visible: true
@@ -131,18 +134,41 @@ ApplicationWindow {
         onTriggered: {
 //            xmlModel.reload();
 //            conf.readDatisText();
-            if (conf.readDatisInfo()) {
-                conf.readDatisText();
-                page1.loadDatisMessage();
-                page1BusyIndicator.running = false;
-                restart();
-//                confReloadTimer.start();
-            } else {
-                running = false;
-                page1BusyIndicator.running = true;
-                repeat = false;
+//            mFtp.
+            switch (conf.tabIndex){
+            case 0:     // ftp file
+//                    ftpPath.text = conf.xmlSourceUri
+//                ftpPath.text = conf.textSourceUri
+//                if ();
+
+                break;
+            case 1:     // local file
+//                    openFileButtonText.text = conf.xmlSourceUri
+//                openFileButtonText.text = conf.textSourceUri
+//                break;
+                if (Conf.readLocalFile()){
+    //                conf.readDatisText();
+                    page1.loadDatisMessage();
+                    page1BusyIndicator.running = false;
+    //                confReloadTimer.start();
+                } else {
+    //                running = false;
+                    page1BusyIndicator.running = true;
+    //                repeat = false;
+                }
             }
+
+            restart();
+
         }
     }
+
+    Conf {
+        id: conf
+    }
+
+//    FtpManager {
+
+//    }
 
 }

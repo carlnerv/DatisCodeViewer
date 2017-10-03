@@ -3,12 +3,13 @@ TEMPLATE = app
 # QGuiApplication gui
 # QQmlApplicationEngine qml
 # QQmlContext qml
-QT += qml gui quick
+QT += qml gui quick network
 CONFIG += c++11
 
 SOURCES += main.cpp \
     Conf.cpp \
-    ftpmanager.cpp
+    ftpmanager.cpp \
+    networker.cpp
 
 RESOURCES += qml.qrc
 
@@ -43,4 +44,5 @@ RC_ICONS = content/mail.ico
 
 HEADERS += \
     Conf.h \
-    ftpmanager.h
+    ftpmanager.h \
+    networker.h
