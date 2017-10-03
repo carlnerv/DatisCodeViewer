@@ -9,7 +9,8 @@ CONFIG += c++11
 SOURCES += main.cpp \
     Conf.cpp \
     ftpmanager.cpp \
-    networker.cpp
+    networker.cpp \
+    downloadmanager.cpp
 
 RESOURCES += qml.qrc
 
@@ -45,4 +46,5 @@ RC_ICONS = content/mail.ico
 HEADERS += \
     Conf.h \
     ftpmanager.h \
-    networker.h
+    networker.h \
+    downloadmanager.h
