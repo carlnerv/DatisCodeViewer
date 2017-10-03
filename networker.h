@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+class QNetworkReply;
+
 class NetWorker : public QObject
 {
     Q_OBJECT
