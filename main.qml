@@ -9,7 +9,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.XmlListModel 2.0
 import QtGraphicalEffects 1.0
 
-import com.mycompany.conf 1.0
+//import com.mycompany.conf 1.0
 //import com.mycompany.ftpmanager 1.0
 
 ApplicationWindow {
@@ -105,9 +105,15 @@ ApplicationWindow {
 //                page1BusyIndicator.running = false;
 //                confReloadTimer.start();
 //            }
-            confReloadTimer.start();
             conf.tabIndex = popPage.tabBarIndex;
+//            if (popPage.tabBarIndex) {
+//                conf.sourceUrl = popPage.ftpFileSource;
+//            } else {
+//                conf.sourceUrl = popPage.localFileSource;
+//            }
+
             conf.saveConf();
+            confReloadTimer.start();
         }
 
 
@@ -131,40 +137,76 @@ ApplicationWindow {
     Timer {
         id: confReloadTimer
 //        repeat: true
+        interval: 5000
         onTriggered: {
 //            xmlModel.reload();
 //            conf.readDatisText();
 //            mFtp.
-            switch (conf.tabIndex){
-            case 0:     // ftp file
-//                    ftpPath.text = conf.xmlSourceUri
-//                ftpPath.text = conf.textSourceUri
-//                if ();
+            getData();
 
-                break;
-            case 1:     // local file
-//                    openFileButtonText.text = conf.xmlSourceUri
-//                openFileButtonText.text = conf.textSourceUri
-//                break;
-                if (Conf.readLocalFile()){
-    //                conf.readDatisText();
-                    page1.loadDatisMessage();
-                    page1BusyIndicator.running = false;
-    //                confReloadTimer.start();
-                } else {
-    //                running = false;
-                    page1BusyIndicator.running = true;
-    //                repeat = false;
-                }
-            }
-
-            restart();
+//            restart();
 
         }
     }
 
-    Conf {
-        id: conf
+    Connections {
+        target: downloadManager
+        onDownloadCompleted: {
+//            datisData.readFile("");
+            if (datisData.readFile(conf.sourceUrl)) {
+                page1.loadDatisMessage();
+                page1BusyIndicator.running = false;
+            } else {
+                page1BusyIndicator.running = true;
+            }
+            confReloadTimer.start();
+        }
+    }
+
+//    Connections {
+//        target: datisData
+//        onDataReady: {
+//            page1.loadDatisMessage();
+//            page1BusyIndicator.running = false;
+//        }
+//    }
+
+    function getData() {
+        switch (conf.tabIndex){
+        case 0:     // ftp file
+//                    ftpPath.text = conf.xmlSourceUri
+//                ftpPath.text = conf.textSourceUri
+//                if ();
+            var url = conf.sourceUrl + "datis.ini";
+            downloadManager.doDownload(url);
+            url = conf.sourceUrl + "Voice.ini";
+            downloadManager.doDownload(url);
+
+
+            break;
+        case 1:     // local file
+//                    openFileButtonText.text = conf.xmlSourceUri
+//                openFileButtonText.text = conf.textSourceUri
+//                break;
+//            if (datisData.readFile(conf.saveConf())){
+////                conf.readDatisText();
+//                page1.loadDatisMessage();
+//                page1BusyIndicator.running = false;
+////                confReloadTimer.start();
+//            } else {
+////                running = false;
+//                page1BusyIndicator.running = true;
+////                repeat = false;
+//            }
+//            datisData.readFile(conf.sourceUrl);
+            if (datisData.readFile(conf.sourceUrl)) {
+                page1.loadDatisMessage();
+                page1BusyIndicator.running = false;
+            } else {
+                page1BusyIndicator.running = true;
+            }
+            break;
+        }
     }
 
 //    FtpManager {

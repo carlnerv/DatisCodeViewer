@@ -22,6 +22,7 @@ void DownloadManager::doDownload(const QUrl &url)
 #endif
 
     currentDownloads.append(reply);
+//    downStatus = false;
 }
 
 QString DownloadManager::saveFileName(const QUrl &url)
@@ -112,5 +113,6 @@ void DownloadManager::downloadFinished(QNetworkReply *reply)
     if (currentDownloads.isEmpty())
 //        // all downloads finished
         emit downloadCompleted();
+//        downStatus = true;
 //        QCoreApplication::instance()->quit();
 }

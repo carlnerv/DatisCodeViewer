@@ -10,7 +10,8 @@ SOURCES += main.cpp \
     Conf.cpp \
     ftpmanager.cpp \
     networker.cpp \
-    downloadmanager.cpp
+    downloadmanager.cpp \
+    datisdata.cpp
 
 RESOURCES += qml.qrc
 
@@ -47,4 +48,5 @@ HEADERS += \
     Conf.h \
     ftpmanager.h \
     networker.h \
-    downloadmanager.h
+    downloadmanager.h \
+    datisdata.h

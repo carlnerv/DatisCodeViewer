@@ -11,6 +11,8 @@ ColumnLayout {
 
 //    property alias stackIndex: stackLayout.currentIndex
     property alias tabBarIndex: tabBar.currentIndex
+    property alias localFileSource: fileDialog.fileUrl
+    property alias ftpFileSource: ftpPath.text
 //    property alias ftpSource: ftpPath.text
 //    property alias localFileSource: openFileButton.text
 
@@ -70,11 +72,16 @@ ColumnLayout {
                 id: ftpPath
                 placeholderText: "FTP路径"
                 width: popupCl.width
+                onEditingFinished: {
+                    page1BusyIndicator.running = true;
+                    conf.sourceUrl = text;
+                    console.log(conf.sourceUrl);
+                }
             }
             Rectangle {
                 height: 80
                 Text {
-                    text: "Datis输出文件所在的FTP路径<br>eg. ftp://[user:password@]172.187.17.106/DATIS/Data/"
+                    text: "Datis输出文件所在的FTP路径<br>eg. ftp://[user[:password]@]hostname/path/"
                 }
             }
 
@@ -90,29 +97,30 @@ ColumnLayout {
 //                echoMode: "Password"
 //                width: popupCl.width
 //            }
-            Button {
-                text: "载入"
-                onClicked: {
-                    page1BusyIndicator.running = true;
-//                    var str = "ftp://"
-//                    //  ftp://user:password@host:port/path
-////                    if(ftpPath.text.slice(0,8)!="ftp://" )
-//                    if(ftpUser.text.length) {
-//                        str = "ftp://" + ftpUser.text + ":" + ftpPW.text + "@" + ftpPath.text/* + "Message.xml"*/;
-//                    }
-//                    else {
-//                        str = "ftp://" + ftpPath.text/* + "/Message.xml"*/;
-//                    }
-//                    text = "载入"
-//                    xmlModel.source = str;
-//                    conf.textSourceUri = str;
-//                    console.log(str);
-                    conf.datisSourceUrl = ftpPath.text;
-                    console.log(conf.datisSourceUrl);
-//                    xmlModel.reload();
-//                    console.log("ftpUser ", ftpUser.text, "ftpPW", ftpPW.text)
-                }
-            }
+
+//            Button {
+//                text: "载入"
+//                onClicked: {
+//                    page1BusyIndicator.running = true;
+////                    var str = "ftp://"
+////                    //  ftp://user:password@host:port/path
+//////                    if(ftpPath.text.slice(0,8)!="ftp://" )
+////                    if(ftpUser.text.length) {
+////                        str = "ftp://" + ftpUser.text + ":" + ftpPW.text + "@" + ftpPath.text/* + "Message.xml"*/;
+////                    }
+////                    else {
+////                        str = "ftp://" + ftpPath.text/* + "/Message.xml"*/;
+////                    }
+////                    text = "载入"
+////                    xmlModel.source = str;
+////                    conf.textSourceUri = str;
+////                    console.log(str);
+//                    conf.sourceUrl = ftpPath.text;
+//                    console.log(conf.sourceUrl);
+////                    xmlModel.reload();
+////                    console.log("ftpUser ", ftpUser.text, "ftpPW", ftpPW.text)
+//                }
+//            }
 
         }
 
@@ -133,7 +141,7 @@ ColumnLayout {
                 width:  parent.width
                 height: 40
                 onClicked: {
-                    fileDialog.selectFolder = true;
+//                    fileDialog.
                     fileDialog.open();
                     page1BusyIndicator.running = true;
                 }
@@ -168,18 +176,20 @@ Project Hosted at <a href='https://github.com/carlnerv/DatisCodeViewer'>GitHub</
     FileDialog {
         id: fileDialog
         title: "打开datis目录"
+        selectFolder: true
 //        nameFilters: [ "Voice.ini文件 (Voice.ini)" ]
 //        selectFolder: ture
+//        var furl;
         onAccepted: {
             var furl = String(fileUrl);
-            furl = furl.slice(8);
-            furl += "/";
+//            furl = furl.slice(8);
+//            furl += "/";
 //            openFileButtonText.text = furl.slice(8); // 切掉file://，从第8个字符开始
-            openFileButtonText.text = furl;
+            openFileButtonText.text = furl.slice(8);
 //            xmlModel.source = fileUrl;
 //            conf.textSourceUri = fileUrl;
 //            conf.textSourceUri = furl.slice(8);
-            conf.datisSourceUrl = fileUrl;
+            conf.sourceUrl = fileUrl;
             console.log(furl);
 //            xmlReloadTimer.start();
             close();
@@ -198,12 +208,12 @@ Project Hosted at <a href='https://github.com/carlnerv/DatisCodeViewer'>GitHub</
                 switch (conf.tabIndex){
                 case 0:
 //                    ftpPath.text = conf.xmlSourceUri
-                    ftpPath.text = conf.datisSourceUrl
+                    ftpPath.text = conf.sourceUrl
 
                     break;
                 case 1:
 //                    openFileButtonText.text = conf.xmlSourceUri
-                    openFileButtonText.text = conf.datisSourceUrl
+                    openFileButtonText.text = conf.sourceUrl.slice(8)
     //                break;
                 }
                 confReloadTimer.start();
