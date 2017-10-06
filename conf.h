@@ -6,11 +6,15 @@
 #include <QFile>
 #include <QJsonObject>
 #include <QJsonDocument>
+//#include <QTextStream>
+#include <QUrl>
+//#include <QDir>
+
 
 class Conf : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString xmlSourceUri READ xmlSourceUri WRITE setXmlSourceUri)
+    Q_PROPERTY(QUrl sourceUrl READ sourceUrl WRITE setSourceUrl)
     Q_PROPERTY(int tabIndex READ tabIndex WRITE setTabIndex)
 
 public:
@@ -18,19 +22,22 @@ public:
 //    Conf(QObject *parent = 0);
 //    conf() ;
     virtual ~Conf() ;
-    void setXmlSourceUri(const QString &a);
-    QString xmlSourceUri() const;
+    void setSourceUrl(const QUrl &a);
+    QUrl sourceUrl() const;
     void setTabIndex(const int &a);
     int tabIndex() const;
+
     Q_INVOKABLE bool saveConf() const;
     Q_INVOKABLE bool loadConf();
 
+
 signals:
-//    void confLoaded();
+
 public slots:
 
+
 private:
-    QString mXmlSourceUri;
+    QUrl mSourceUrl;
     int mTabIndex;
 };
 

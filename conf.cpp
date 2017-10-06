@@ -1,8 +1,6 @@
 #include "Conf.h"
 
 Conf::Conf(QObject *parent) : QObject(parent)
-  ,mXmlSourceUri("")
-  ,mTabIndex(0)
 {
 
 }
@@ -12,14 +10,14 @@ Conf::~Conf()
 
 }
 
-void Conf::setXmlSourceUri(const QString &a)
+void Conf::setSourceUrl(const QUrl &a)
 {
-    mXmlSourceUri = a;
+    mSourceUrl = a;
 }
 
-QString Conf::xmlSourceUri() const
+QUrl Conf::sourceUrl() const
 {
-    return mXmlSourceUri;
+    return mSourceUrl;
 }
 
 void Conf::setTabIndex(const int &a)
@@ -41,7 +39,7 @@ bool Conf::saveConf() const
     }
 
     QJsonObject confObject;
-    confObject["xmlSourceUri"] = mXmlSourceUri;
+    confObject["sourceUri"] = mSourceUrl.toString();
     confObject["tabIndex"] = mTabIndex;
     QJsonDocument saveDoc(confObject);
     saveFile.write(saveDoc.toJson());
@@ -59,8 +57,9 @@ bool Conf::loadConf()
     QByteArray saveData = loadFile.readAll();
     QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
     QJsonObject confObject = loadDoc.object();
-    mXmlSourceUri = confObject["xmlSourceUri"].toString();
+    mSourceUrl.setUrl(confObject["sourceUri"].toString());
     mTabIndex = confObject["tabIndex"].toInt();
-//    emit confLoaded();
     return true;
 }
+
+

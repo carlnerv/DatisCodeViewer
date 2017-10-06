@@ -3,11 +3,15 @@ TEMPLATE = app
 # QGuiApplication gui
 # QQmlApplicationEngine qml
 # QQmlContext qml
-QT += qml gui quick
+QT += qml gui quick network
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    Conf.cpp
+    Conf.cpp \
+    ftpmanager.cpp \
+    networker.cpp \
+    downloadmanager.cpp \
+    datisdata.cpp
 
 RESOURCES += qml.qrc
 
@@ -35,9 +39,14 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     content/menu.png \
-    content/q.ico
+    content/q.ico \
+    content/mail.ico
 
-RC_ICONS = content/q.ico
+RC_ICONS = content/mail.ico
 
 HEADERS += \
-    Conf.h
+    Conf.h \
+    ftpmanager.h \
+    networker.h \
+    downloadmanager.h \
+    datisdata.h
