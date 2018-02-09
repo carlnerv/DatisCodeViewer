@@ -9,7 +9,9 @@ Item {
     GridLayout {
 //        id: layout
         rows: 2
+        rowSpacing: 5
         columns: 2
+        columnSpacing: 5
         anchors.margins: 5
         anchors.fill: parent
         flow: GridLayout.TopToBottom
@@ -97,42 +99,6 @@ Item {
 
         // GridLayout 2
 
-        // 当前时间
-//        Rectangle {
-////            id: timeRect
-//            Layout.fillHeight: true
-//            Layout.fillWidth: true
-//            Layout.minimumHeight: 100
-//            Layout.minimumWidth: 100
-//            border.width: 1
-//            border.color: "grey"
-//            color: "transparent"
-//            Text {
-//                text: qsTr("当前时间")
-//                anchors.left: parent.left
-//                anchors.leftMargin: 6
-//                anchors.top: parent.top
-//                anchors.topMargin: 2
-//            }
-//            Text {
-//                id: currentTime
-//                font.pointSize: 120
-//                font.family: "Arial"
-//                verticalAlignment: Text.AlignVCenter
-//                horizontalAlignment: Text.AlignHCenter
-//                text: qsTr("text")
-//                anchors.horizontalCenter: parent.horizontalCenter
-//                anchors.fill: parent
-//                padding: 10
-//                fontSizeMode: Text.Fit
-
-//            }
-
-
-
-//        }
-
-        // GridLayout 3
 
         Rectangle {
             Layout.rowSpan: 2
@@ -140,8 +106,9 @@ Item {
             Layout.fillHeight: true
             Layout.fillWidth: true
             Layout.minimumHeight: 100
-//            Layout.minimumWidth: 100
+            Layout.minimumWidth: 100
             Layout.preferredWidth: parent.width * 0.66
+
 
             border.color: "grey"
             border.width: 1
@@ -176,64 +143,6 @@ Item {
                 anchors.margins: 10
                 wrapMode: Text.WordWrap
             }
-
-//            GridLayout {
-//                anchors.fill: parent
-////                anchors.margins: 5
-
-//                rowSpacing: 2
-//                columns: 2
-
-//                // row0
-//                Text {
-//                    text: "更新时间"
-//                    Layout.preferredWidth: parent.width * 0.3
-//                    horizontalAlignment: Text.AlignHCenter
-//                }
-
-//                Text {
-//                    id: tUpdateTime
-//                    text: qsTr("-")
-//                    Layout.fillWidth: true
-//    //                verticalAlignment: Text.AlignVCenter
-//    //                horizontalAlignment: Text.AlignHCenter
-//    //                anchors.horizontalCenter: parent.horizontalCenter
-//    //                anchors.fill: parent
-//    //                font.family: "Arial"
-////                    padding: 10
-//    //                fontSizeMode: Text.Fit
-//    //                font.pointSize: 120
-//                }
-
-//                // row1
-//                Text {
-//                    text: qsTr("超时时间")
-//                    Layout.preferredWidth: parent.width * 0.3
-//                    horizontalAlignment: Text.AlignHCenter
-//                }
-
-//                Text {
-//                    id: tExpiredTime
-//                    text: qsTr("-")
-//                    Layout.fillWidth: true
-//                }
-
-//                // row2
-//                // row3
-
-//                // row4
-
-//                // row5
-
-//                // row6
-
-//                // row7
-
-//                // row8
-
-//            }
-
-
         }
 
 

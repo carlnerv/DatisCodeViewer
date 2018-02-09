@@ -105,6 +105,7 @@ ApplicationWindow {
 //                page1BusyIndicator.running = false;
 //                confReloadTimer.start();
 //            }
+            if (conf.sourceUrl.length) {
             conf.tabIndex = popPage.tabBarIndex;
 //            if (popPage.tabBarIndex) {
 //                conf.sourceUrl = popPage.ftpFileSource;
@@ -113,7 +114,9 @@ ApplicationWindow {
 //            }
 
             conf.saveConf();
-            confReloadTimer.start();
+//            confReloadTimer.start();
+            getData();
+            }
         }
 
 
@@ -137,6 +140,7 @@ ApplicationWindow {
     Timer {
         id: confReloadTimer
 //        repeat: true
+//        triggeredOnStart: true
         interval: 5000
         onTriggered: {
 //            xmlModel.reload();
@@ -202,15 +206,12 @@ ApplicationWindow {
             if (datisData.readFile(conf.sourceUrl)) {
                 page1.loadDatisMessage();
                 page1BusyIndicator.running = false;
+                confReloadTimer.start();
             } else {
                 page1BusyIndicator.running = true;
             }
             break;
         }
     }
-
-//    FtpManager {
-
-//    }
 
 }

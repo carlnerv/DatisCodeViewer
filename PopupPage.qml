@@ -1,7 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Window 2.2
-import QtQuick.Controls 2.1
-import QtQuick.Controls.impl 2.1
+import QtQuick.Controls 2.3
+//import QtQuick.Controls.impl 2.1
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.3
 
@@ -20,23 +20,37 @@ ColumnLayout {
         id: tabBar
         spacing: 1
         Layout.fillWidth: true
-        currentIndex: stackLayout.currentIndex
+        anchors.top: parent.top
+//        currentIndex: stackLayout.currentIndex
         background: Rectangle {
             color: "#eeeeee"
+//            implicitHeight: 40
+//            border.color: "grey"
+//            border.width: 1
+//            radius: 2
         }
 
         TabButton {
             id: tabButton1
             text: "FTP"
+            anchors.left: parent.left
             // 使用Default需要import QtQuick.Controls.impl 2.1
             // 查看QtQuick.Controls中的TabButton
             // 未选中的TabButton颜色是tabButtonColor
+//            background: Rectangle {
+//                    implicitHeight: 40
+//                    color: tabButton1.down
+//                        ? (tabButton1.checked ? Default.tabButtonCheckedPressedColor : Default.tabButtonPressedColor)
+//                        : (tabButton1.checked ? "transparent" : /*Default.tabButtonColor*/"grey")
+//                }
             background: Rectangle {
-                    implicitHeight: 40
-                    color: tabButton1.down
-                        ? (tabButton1.checked ? Default.tabButtonCheckedPressedColor : Default.tabButtonPressedColor)
-                        : (tabButton1.checked ? "transparent" : /*Default.tabButtonColor*/"grey")
-                }
+//                border.color: "grey"
+//                border.width: 1
+                implicitHeight: 40
+                color: parent.down ? "silver" : (parent.checked ? "transparent" : "grey")
+//                radius: 20
+            }
+
 //            onClicked: {
 //                openFileButton.text = "打开本地文件"
 //            }
@@ -44,46 +58,59 @@ ColumnLayout {
         TabButton {
             id: tabButton2
             text: "本地文件"
-            background: Rectangle {
-                    implicitHeight: 40
-                    color: tabButton2.down
-                        ? (tabButton2.checked ? Default.tabButtonCheckedPressedColor : Default.tabButtonPressedColor)
-                        : (tabButton2.checked ? "transparent" : /*Default.tabButtonColor*/"grey")
-                }
+            anchors.left: tabButton1.right
+//            background: Rectangle {
+//                    implicitHeight: 40
+//                    color: tabButton2.down
+//                        ? (tabButton2.checked ? Default.tabButtonCheckedPressedColor : Default.tabButtonPressedColor)
+//                        : (tabButton2.checked ? "transparent" : /*Default.tabButtonColor*/"grey")
+//                }
 //            onClicked: {
 //                ftpPath.text = ""
 //                ftpUser.text = ""
 //                ftpPW.text = ""
 //            }
+            background: Rectangle {
+//                border.color: "grey"
+//                border.width: 1
+                implicitHeight: 40
+                color: parent.down ? "silver" : (parent.checked ? "transparent" : "grey")
+//                radius: 20
+            }
         }
     }
 
     StackLayout {
         id: stackLayout
         height: 150
+//        currentIndex: 0
         currentIndex: tabBar.currentIndex
 //                    width: parent.width
+        anchors.top: tabBar.bottom
+        anchors.topMargin: 5
 
         // ftp信息
         ColumnLayout {
             id: ftpInfo
 //            spacing: 5
+            Layout.fillWidth: true
             TextField {
                 id: ftpPath
+                Layout.fillWidth: true
                 placeholderText: "FTP路径"
-                width: popupCl.width
+//                width: popupCl.width
                 onEditingFinished: {
                     page1BusyIndicator.running = true;
-                    conf.sourceUrl = text;
+                    if (text.substring(0,3).toLowerCase() == "ftp") conf.sourceUrl = text;
                     console.log(conf.sourceUrl);
                 }
             }
-            Rectangle {
-                height: 80
+//            Rectangle {
+//                height: 80
                 Text {
                     text: "Datis输出文件所在的FTP路径<br>eg. ftp://[user[:password]@]hostname/path/"
                 }
-            }
+//            }
 
 
 //            TextField {
@@ -126,6 +153,7 @@ ColumnLayout {
 
         // 本地文件
         Item {
+            id: item1
             height: ftpInfo.height
             Button {
                 id: openFileButton
@@ -140,6 +168,8 @@ ColumnLayout {
                 }
                 width:  parent.width
                 height: 40
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
                 onClicked: {
 //                    fileDialog.
                     fileDialog.open();
@@ -164,8 +194,8 @@ ColumnLayout {
         Text {
             anchors.fill: parent
             fontSizeMode: Text.Fit
-            text: "<h1>关于Datis Code Viewer</h1><br><p><b>Version 1.0.1</b><br>
-使用 Qt 5.8</p>
+            text: "<h1>关于Datis Code Viewer</h1><br><p><b>Version 1.0.2</b><br>
+使用 Qt 5.10</p>
 <p>Copyright © 2017 carlnerv</p>
 <p>License: <a href=''>MIT License</a><br>
 Project Hosted at <a href='https://github.com/carlnerv/DatisCodeViewer'>GitHub</a></p>"
@@ -209,12 +239,11 @@ Project Hosted at <a href='https://github.com/carlnerv/DatisCodeViewer'>GitHub</
                 case 0:
 //                    ftpPath.text = conf.xmlSourceUri
                     ftpPath.text = conf.sourceUrl
-
                     break;
                 case 1:
 //                    openFileButtonText.text = conf.xmlSourceUri
                     openFileButtonText.text = conf.sourceUrl.slice(8)
-    //                break;
+                    break;
                 }
                 confReloadTimer.start();
             }

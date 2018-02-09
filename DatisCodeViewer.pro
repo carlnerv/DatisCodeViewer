@@ -8,8 +8,6 @@ CONFIG += c++11
 
 SOURCES += main.cpp \
     Conf.cpp \
-    ftpmanager.cpp \
-    networker.cpp \
     downloadmanager.cpp \
     datisdata.cpp
 
@@ -46,7 +44,5 @@ RC_ICONS = content/mail.ico
 
 HEADERS += \
     Conf.h \
-    ftpmanager.h \
-    networker.h \
     downloadmanager.h \
     datisdata.h
