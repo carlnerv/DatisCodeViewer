@@ -1,4 +1,4 @@
-#include "Conf.h"
+#include "conf.h"
 
 Conf::Conf(QObject *parent) : QObject(parent)
 {

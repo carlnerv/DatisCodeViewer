@@ -1,257 +1,208 @@
-import QtQuick 2.7
-import QtQuick.Window 2.2
+import QtQuick 2.10
 import QtQuick.Controls 2.3
-//import QtQuick.Controls.impl 2.1
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.3
 
-ColumnLayout {
-    id: popupCl
+Item {
     anchors.fill: parent
-
-//    property alias stackIndex: stackLayout.currentIndex
     property alias tabBarIndex: tabBar.currentIndex
     property alias localFileSource: fileDialog.fileUrl
     property alias ftpFileSource: ftpPath.text
-//    property alias ftpSource: ftpPath.text
-//    property alias localFileSource: openFileButton.text
 
-    TabBar {
-        id: tabBar
-        spacing: 1
-        Layout.fillWidth: true
-        anchors.top: parent.top
-//        currentIndex: stackLayout.currentIndex
-        background: Rectangle {
-            color: "#eeeeee"
-//            implicitHeight: 40
-//            border.color: "grey"
-//            border.width: 1
-//            radius: 2
-        }
+    ColumnLayout {
+        id: popupCl
+        anchors.fill: parent
 
-        TabButton {
-            id: tabButton1
-            text: "FTP"
-            anchors.left: parent.left
-            // 使用Default需要import QtQuick.Controls.impl 2.1
-            // 查看QtQuick.Controls中的TabButton
-            // 未选中的TabButton颜色是tabButtonColor
-//            background: Rectangle {
-//                    implicitHeight: 40
-//                    color: tabButton1.down
-//                        ? (tabButton1.checked ? Default.tabButtonCheckedPressedColor : Default.tabButtonPressedColor)
-//                        : (tabButton1.checked ? "transparent" : /*Default.tabButtonColor*/"grey")
-//                }
-            background: Rectangle {
-//                border.color: "grey"
-//                border.width: 1
-                implicitHeight: 40
-                color: parent.down ? "silver" : (parent.checked ? "transparent" : "grey")
-//                radius: 20
-            }
-
-//            onClicked: {
-//                openFileButton.text = "打开本地文件"
-//            }
-        }
-        TabButton {
-            id: tabButton2
-            text: "本地文件"
-            anchors.left: tabButton1.right
-//            background: Rectangle {
-//                    implicitHeight: 40
-//                    color: tabButton2.down
-//                        ? (tabButton2.checked ? Default.tabButtonCheckedPressedColor : Default.tabButtonPressedColor)
-//                        : (tabButton2.checked ? "transparent" : /*Default.tabButtonColor*/"grey")
-//                }
-//            onClicked: {
-//                ftpPath.text = ""
-//                ftpUser.text = ""
-//                ftpPW.text = ""
-//            }
-            background: Rectangle {
-//                border.color: "grey"
-//                border.width: 1
-                implicitHeight: 40
-                color: parent.down ? "silver" : (parent.checked ? "transparent" : "grey")
-//                radius: 20
-            }
-        }
-    }
-
-    StackLayout {
-        id: stackLayout
-        height: 150
-//        currentIndex: 0
-        currentIndex: tabBar.currentIndex
-//                    width: parent.width
-        anchors.top: tabBar.bottom
-        anchors.topMargin: 5
-
-        // ftp信息
-        ColumnLayout {
-            id: ftpInfo
-//            spacing: 5
+        TabBar {
+            id: tabBar
+            spacing: 1
             Layout.fillWidth: true
-            TextField {
-                id: ftpPath
+            anchors.top: parent.top
+    //        currentIndex: stackLayout.currentIndex
+            background: Rectangle {
+                color: "#eeeeee"
+    //            implicitHeight: 40
+    //            border.color: "grey"
+    //            border.width: 1
+    //            radius: 2
+            }
+
+            TabButton {
+                id: tabButton1
+                text: "FTP"
+                anchors.left: parent.left
+                // 使用Default需要import QtQuick.Controls.impl 2.1
+                // 查看QtQuick.Controls中的TabButton
+                // 未选中的TabButton颜色是tabButtonColor
+    //            background: Rectangle {
+    //                    implicitHeight: 40
+    //                    color: tabButton1.down
+    //                        ? (tabButton1.checked ? Default.tabButtonCheckedPressedColor : Default.tabButtonPressedColor)
+    //                        : (tabButton1.checked ? "transparent" : /*Default.tabButtonColor*/"grey")
+    //                }
+                background: Rectangle {
+    //                border.color: "grey"
+    //                border.width: 1
+                    implicitHeight: 40
+                    color: parent.down ? "silver" : (parent.checked ? "transparent" : "grey")
+    //                radius: 20
+                }
+
+
+            }
+            TabButton {
+                id: tabButton2
+                text: "本地文件"
+                anchors.left: tabButton1.right
+    //            background: Rectangle {
+    //                    implicitHeight: 40
+    //                    color: tabButton2.down
+    //                        ? (tabButton2.checked ? Default.tabButtonCheckedPressedColor : Default.tabButtonPressedColor)
+    //                        : (tabButton2.checked ? "transparent" : /*Default.tabButtonColor*/"grey")
+    //                }
+                background: Rectangle {
+    //                border.color: "grey"
+    //                border.width: 1
+                    implicitHeight: 40
+                    color: parent.down ? "silver" : (parent.checked ? "transparent" : "grey")
+    //                radius: 20
+                }
+            }
+        }
+
+        StackLayout {
+            id: stackLayout
+            height: 150
+    //        currentIndex: 0
+            currentIndex: tabBar.currentIndex
+    //                    width: parent.width
+            anchors.top: tabBar.bottom
+            anchors.topMargin: 5
+
+            // ftp信息
+            ColumnLayout {
+                id: ftpInfo
+    //            spacing: 5
                 Layout.fillWidth: true
-                placeholderText: "FTP路径"
-//                width: popupCl.width
-                onEditingFinished: {
-                    page1BusyIndicator.running = true;
-                    if (text.substring(0,3).toLowerCase() == "ftp") conf.sourceUrl = text;
-                    console.log(conf.sourceUrl);
+                TextField {
+                    id: ftpPath
+                    Layout.fillWidth: true
+                    placeholderText: "FTP路径"
+    //                width: popupCl.width
+                    onEditingFinished: {
+                        page1BusyIndicator.running = true;
+                        conf.sourceUrl = Qt.resolvedUrl(text);
+                        console.log(conf.sourceUrl.toString());
+                        console.log(conf.sourceUrl == Qt.resolvedUrl(text));
+                    }
+                }
+    //            Rectangle {
+    //                height: 80
+                    Text {
+                        text: "Datis输出文件所在的FTP路径<br>eg. ftp://[user[:password]@]hostname/path/"
+                    }
+    //            }
+            }
+
+            // 本地文件
+            Item {
+                id: item1
+                height: ftpInfo.height
+                Button {
+                    id: openFileButton
+                    Text {
+                        id: openFileButtonText
+                        anchors.fill: parent
+                        text: "打开本地文件"
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        elide: Text.ElideMiddle
+
+                    }
+                    width:  parent.width
+                    height: 40
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+                    onClicked: {
+    //                    fileDialog.
+                        fileDialog.open();
+                        page1BusyIndicator.running = true;
+                    }
                 }
             }
-//            Rectangle {
-//                height: 80
-                Text {
-                    text: "Datis输出文件所在的FTP路径<br>eg. ftp://[user[:password]@]hostname/path/"
-                }
-//            }
+        } // StackLayout
 
 
-//            TextField {
-//                id: ftpUser
-//                placeholderText: "用户名"
-//                width: popupCl.width
-//            }
-//            TextField {
-//                id: ftpPW
-//                placeholderText: "密码";
-//                echoMode: "Password"
-//                width: popupCl.width
-//            }
 
-//            Button {
-//                text: "载入"
-//                onClicked: {
-//                    page1BusyIndicator.running = true;
-////                    var str = "ftp://"
-////                    //  ftp://user:password@host:port/path
-//////                    if(ftpPath.text.slice(0,8)!="ftp://" )
-////                    if(ftpUser.text.length) {
-////                        str = "ftp://" + ftpUser.text + ":" + ftpPW.text + "@" + ftpPath.text/* + "Message.xml"*/;
-////                    }
-////                    else {
-////                        str = "ftp://" + ftpPath.text/* + "/Message.xml"*/;
-////                    }
-////                    text = "载入"
-////                    xmlModel.source = str;
-////                    conf.textSourceUri = str;
-////                    console.log(str);
-//                    conf.sourceUrl = ftpPath.text;
-//                    console.log(conf.sourceUrl);
-////                    xmlModel.reload();
-////                    console.log("ftpUser ", ftpUser.text, "ftpPW", ftpPW.text)
-//                }
-//            }
-
+        Rectangle {
+            height: 2
+            Layout.fillWidth: true
+            color: "grey"
         }
 
-        // 本地文件
-        Item {
-            id: item1
-            height: ftpInfo.height
-            Button {
-                id: openFileButton
-                Text {
-                    id: openFileButtonText
-                    anchors.fill: parent
-                    text: "打开本地文件"
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    elide: Text.ElideMiddle
-
-                }
-                width:  parent.width
-                height: 40
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
-                onClicked: {
-//                    fileDialog.
-                    fileDialog.open();
-                    page1BusyIndicator.running = true;
-                }
-            }
-        }
-    } // StackLayout
-
-
-
-    Rectangle {
-        height: 2
-        Layout.fillWidth: true
-        color: "grey"
-    }
-
-    Rectangle {
-        Layout.fillWidth:  true
-        Layout.minimumHeight: 200
-        Layout.fillHeight: true
-        Text {
-            anchors.fill: parent
-            fontSizeMode: Text.Fit
-            text: "<h1>关于Datis Code Viewer</h1><br><p><b>Version 1.0.2</b><br>
+        Rectangle {
+            Layout.fillWidth:  true
+            Layout.minimumHeight: 200
+            Layout.fillHeight: true
+            Text {
+                anchors.fill: parent
+                fontSizeMode: Text.Fit
+                text: "<h1>关于Datis Code Viewer</h1><br><p><b>Version 1.0.2</b><br>
 使用 Qt 5.10</p>
 <p>Copyright © 2017 carlnerv</p>
 <p>License: <a href=''>MIT License</a><br>
 Project Hosted at <a href='https://github.com/carlnerv/DatisCodeViewer'>GitHub</a></p>"
-            onLinkActivated: Qt.openUrlExternally("https://github.com/carlnerv/DatisCodeViewer")
-        }
-    }
-
-    FileDialog {
-        id: fileDialog
-        title: "打开datis目录"
-        selectFolder: true
-//        nameFilters: [ "Voice.ini文件 (Voice.ini)" ]
-//        selectFolder: ture
-//        var furl;
-        onAccepted: {
-            var furl = String(fileUrl);
-//            furl = furl.slice(8);
-//            furl += "/";
-//            openFileButtonText.text = furl.slice(8); // 切掉file://，从第8个字符开始
-            openFileButtonText.text = furl.slice(8);
-//            xmlModel.source = fileUrl;
-//            conf.textSourceUri = fileUrl;
-//            conf.textSourceUri = furl.slice(8);
-            conf.sourceUrl = fileUrl;
-            console.log(furl);
-//            xmlReloadTimer.start();
-            close();
-        }
-        onRejected: {
-            close();
-        }
-    }
-
-    Connections {
-        target: rootWindow
-        Component.onCompleted: {
-            if(conf.loadConf()) {
-//                xmlModel.source = conf.xmlSourceUri
-                tabBar.setCurrentIndex(conf.tabIndex)
-                switch (conf.tabIndex){
-                case 0:
-//                    ftpPath.text = conf.xmlSourceUri
-                    ftpPath.text = conf.sourceUrl
-                    break;
-                case 1:
-//                    openFileButtonText.text = conf.xmlSourceUri
-                    openFileButtonText.text = conf.sourceUrl.slice(8)
-                    break;
-                }
-                confReloadTimer.start();
+                onLinkActivated: Qt.openUrlExternally("https://github.com/carlnerv/DatisCodeViewer")
             }
         }
-    }
 
-} // columnLayout
+        FileDialog {
+            id: fileDialog
+            title: "打开datis目录"
+            selectFolder: true
+            onAccepted: {
+//                var furl = String(fileUrl);
+    //            furl = furl.slice(8);
+    //            furl += "/";
+    //            openFileButtonText.text = furl.slice(8); // 切掉file://，从第8个字符开始
+                openFileButtonText.text = fileUrl.toString().slice(8);
+    //            xmlModel.source = fileUrl;
+    //            conf.textSourceUri = fileUrl;
+    //            conf.textSourceUri = furl.slice(8);
+                conf.sourceUrl = fileUrl;
+                console.log(fileUrl.toString());
+    //            xmlReloadTimer.start();
+                close();
+            }
+            onRejected: {
+                close();
+            }
+        }
 
+        Connections {
+            target: rootWindow
+            Component.onCompleted: {
+                if(conf.loadConf()) {
+    //                xmlModel.source = conf.xmlSourceUri
+                    tabBar.setCurrentIndex(conf.tabIndex)
+                    switch (conf.tabIndex){
+                    case 0:
+    //                    ftpPath.text = conf.xmlSourceUri
+                        ftpPath.text = conf.sourceUrl.toString()
+                        break;
+                    case 1:
+    //                    openFileButtonText.text = conf.xmlSourceUri
+                        openFileButtonText.text = conf.sourceUrl.toString().slice(8)
+                        break;
+                    }
+//                    confReloadTimer.start();
+                    getData();
+                }
+            }
+        }
+
+    } // columnLayout
+}
 
 
 

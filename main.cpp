@@ -1,7 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include "Conf.h"
+#include "conf.h"
 #include "downloadmanager.h"
 #include "datisdata.h"
 

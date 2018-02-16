@@ -1,10 +1,8 @@
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Layouts 1.3
-import QtQml 2.2
 
 Item {
     anchors.fill: parent
-    property var locale: Qt.locale()
 
     GridLayout {
 //        id: layout
@@ -20,7 +18,7 @@ Item {
         Rectangle {
 //            id: datisCodeRect
             // 使用Layout布局则使用Layout宽高，另有最大最小宽高
-//            Layout.preferredHeight: parent.height * 0.3
+            Layout.preferredHeight: parent.height * 0.5
             Layout.preferredWidth: parent.width * 0.3
             Layout.fillHeight: true
             Layout.fillWidth: true
@@ -31,7 +29,6 @@ Item {
             border.width: 1
             border.color: "grey"
             color: "transparent"
-            Layout.preferredHeight: parent.height * 0.3
 
             Text {
                 id: tATISVersion
@@ -98,8 +95,6 @@ Item {
         } // 跑道号
 
         // GridLayout 2
-
-
         Rectangle {
             Layout.rowSpan: 2
 //            Layout.columnSpan: 2
@@ -108,7 +103,6 @@ Item {
             Layout.minimumHeight: 100
             Layout.minimumWidth: 100
             Layout.preferredWidth: parent.width * 0.66
-
 
             border.color: "grey"
             border.width: 1
@@ -148,36 +142,6 @@ Item {
 
 
     }
-
-    // 定时器，0.5s，刷新时间
-//    Timer {
-//        interval: 500; running: true; repeat: true;
-//        onTriggered: {
-//            var date = new Date();
-//            currentTime.text = Qt.formatDate(date, "yyyy-MM-dd") + "\n" + Qt.formatTime(date, "hh:mm:ss");
-//            var datisExpiredTime = Date.fromLocaleString(locale, tExpiredTime.text, "yyyy-MM-dd hh:mm:ss");
-////                    console.log(datisExpiredTime)
-//            if(date > datisExpiredTime){
-//                tATISVersion.color = "red"
-//            }
-//            else {
-//                tATISVersion.color = "green"
-//            }
-//        }
-//        triggeredOnStart: true
-//    }
-
-//    Connections {
-//       target: datisData
-//       onDataReady: {
-
-//       }
-
-//       onDatisTextChanged: {
-
-//       }
-
-//    }
 
     function loadDatisMessage() {
 //        tATISVersion.text = xmlModel.get(0).ATISVersion;
