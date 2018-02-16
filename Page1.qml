@@ -164,6 +164,8 @@ Item {
             tATISVersion.color = "green"
         }
 
+        page1BusyIndicator.running = false;
+
     }
 
 

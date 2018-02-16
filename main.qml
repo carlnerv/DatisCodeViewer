@@ -94,7 +94,7 @@ ApplicationWindow {
         id: confReloadTimer
 //        repeat: true
 //        triggeredOnStart: true
-        interval: 5000
+        interval: 5000  // 5000ms
         onTriggered: {
             getData();
         }
@@ -105,7 +105,7 @@ ApplicationWindow {
         onDownloadCompleted: {
             if (datisData.readFile(conf.sourceUrl)) {
                 page1.loadDatisMessage();
-                page1BusyIndicator.running = false;
+//                page1BusyIndicator.running = false;
             } else {
                 page1BusyIndicator.running = true;
             }
@@ -132,7 +132,7 @@ ApplicationWindow {
         case 1:     // local file
             if (datisData.readFile(conf.sourceUrl)) {
                 page1.loadDatisMessage();
-                page1BusyIndicator.running = false;
+//                page1BusyIndicator.running = false;
                 confReloadTimer.start();
             } else {
                 page1BusyIndicator.running = true;
