@@ -1,15 +1,15 @@
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Layouts 1.3
-import QtQml 2.2
 
 Item {
     anchors.fill: parent
-    property var locale: Qt.locale()
 
     GridLayout {
 //        id: layout
         rows: 2
+        rowSpacing: 5
         columns: 2
+        columnSpacing: 5
         anchors.margins: 5
         anchors.fill: parent
         flow: GridLayout.TopToBottom
@@ -18,7 +18,7 @@ Item {
         Rectangle {
 //            id: datisCodeRect
             // 使用Layout布局则使用Layout宽高，另有最大最小宽高
-//            Layout.preferredHeight: parent.height * 0.3
+            Layout.preferredHeight: parent.height * 0.5
             Layout.preferredWidth: parent.width * 0.3
             Layout.fillHeight: true
             Layout.fillWidth: true
@@ -29,7 +29,6 @@ Item {
             border.width: 1
             border.color: "grey"
             color: "transparent"
-            Layout.preferredHeight: parent.height * 0.3
 
             Text {
                 id: tATISVersion
@@ -96,51 +95,13 @@ Item {
         } // 跑道号
 
         // GridLayout 2
-
-        // 当前时间
-//        Rectangle {
-////            id: timeRect
-//            Layout.fillHeight: true
-//            Layout.fillWidth: true
-//            Layout.minimumHeight: 100
-//            Layout.minimumWidth: 100
-//            border.width: 1
-//            border.color: "grey"
-//            color: "transparent"
-//            Text {
-//                text: qsTr("当前时间")
-//                anchors.left: parent.left
-//                anchors.leftMargin: 6
-//                anchors.top: parent.top
-//                anchors.topMargin: 2
-//            }
-//            Text {
-//                id: currentTime
-//                font.pointSize: 120
-//                font.family: "Arial"
-//                verticalAlignment: Text.AlignVCenter
-//                horizontalAlignment: Text.AlignHCenter
-//                text: qsTr("text")
-//                anchors.horizontalCenter: parent.horizontalCenter
-//                anchors.fill: parent
-//                padding: 10
-//                fontSizeMode: Text.Fit
-
-//            }
-
-
-
-//        }
-
-        // GridLayout 3
-
         Rectangle {
             Layout.rowSpan: 2
 //            Layout.columnSpan: 2
             Layout.fillHeight: true
             Layout.fillWidth: true
             Layout.minimumHeight: 100
-//            Layout.minimumWidth: 100
+            Layout.minimumWidth: 100
             Layout.preferredWidth: parent.width * 0.66
 
             border.color: "grey"
@@ -176,99 +137,11 @@ Item {
                 anchors.margins: 10
                 wrapMode: Text.WordWrap
             }
-
-//            GridLayout {
-//                anchors.fill: parent
-////                anchors.margins: 5
-
-//                rowSpacing: 2
-//                columns: 2
-
-//                // row0
-//                Text {
-//                    text: "更新时间"
-//                    Layout.preferredWidth: parent.width * 0.3
-//                    horizontalAlignment: Text.AlignHCenter
-//                }
-
-//                Text {
-//                    id: tUpdateTime
-//                    text: qsTr("-")
-//                    Layout.fillWidth: true
-//    //                verticalAlignment: Text.AlignVCenter
-//    //                horizontalAlignment: Text.AlignHCenter
-//    //                anchors.horizontalCenter: parent.horizontalCenter
-//    //                anchors.fill: parent
-//    //                font.family: "Arial"
-////                    padding: 10
-//    //                fontSizeMode: Text.Fit
-//    //                font.pointSize: 120
-//                }
-
-//                // row1
-//                Text {
-//                    text: qsTr("超时时间")
-//                    Layout.preferredWidth: parent.width * 0.3
-//                    horizontalAlignment: Text.AlignHCenter
-//                }
-
-//                Text {
-//                    id: tExpiredTime
-//                    text: qsTr("-")
-//                    Layout.fillWidth: true
-//                }
-
-//                // row2
-//                // row3
-
-//                // row4
-
-//                // row5
-
-//                // row6
-
-//                // row7
-
-//                // row8
-
-//            }
-
-
         }
 
 
 
     }
-
-    // 定时器，0.5s，刷新时间
-//    Timer {
-//        interval: 500; running: true; repeat: true;
-//        onTriggered: {
-//            var date = new Date();
-//            currentTime.text = Qt.formatDate(date, "yyyy-MM-dd") + "\n" + Qt.formatTime(date, "hh:mm:ss");
-//            var datisExpiredTime = Date.fromLocaleString(locale, tExpiredTime.text, "yyyy-MM-dd hh:mm:ss");
-////                    console.log(datisExpiredTime)
-//            if(date > datisExpiredTime){
-//                tATISVersion.color = "red"
-//            }
-//            else {
-//                tATISVersion.color = "green"
-//            }
-//        }
-//        triggeredOnStart: true
-//    }
-
-//    Connections {
-//       target: datisData
-//       onDataReady: {
-
-//       }
-
-//       onDatisTextChanged: {
-
-//       }
-
-//    }
 
     function loadDatisMessage() {
 //        tATISVersion.text = xmlModel.get(0).ATISVersion;
@@ -290,6 +163,8 @@ Item {
         else {
             tATISVersion.color = "green"
         }
+
+        page1BusyIndicator.running = false;
 
     }
 

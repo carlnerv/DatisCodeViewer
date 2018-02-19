@@ -1,16 +1,7 @@
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Window 2.2
-import QtQuick.Controls 2.1
-import QtQuick.Controls.impl 2.1
-//import QtQuick.Dialogs 1.2
+import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
-//import QtQml 2.2
-//import QtQml.Models 2.2
-import QtQuick.XmlListModel 2.0
-import QtGraphicalEffects 1.0
-
-//import com.mycompany.conf 1.0
-//import com.mycompany.ftpmanager 1.0
 
 ApplicationWindow {
     id: rootWindow
@@ -66,7 +57,6 @@ ApplicationWindow {
                 from: rootWindow.width;
                 to: rootWindow.width - popup.width
             }
-
         }
 
         exit: Transition {
@@ -80,13 +70,7 @@ ApplicationWindow {
         background: Rectangle {
             id: popupBG
             border.color: "grey"
-            layer.enabled: true
-            layer.effect: DropShadow {
-                transparentBorder: true
-                horizontalOffset: -3
-                color: "#80000000"
-
-            }
+            border.width: 1
         }
 
         PopupPage {
@@ -94,68 +78,34 @@ ApplicationWindow {
         }
 
         onClosed: {
-//            if(xmlModel.status == XmlListModel.Ready) {
-//                conf.xmlSourceUri = xmlModel.source
-//                conf.tabIndex = popPage.tabBarIndex
-//                conf.saveConf()
-//            }
-//            conf.textSourceUri =
-//            if (conf.readDatisText()) {
-//                page1.loadDatisMessage();
-//                page1BusyIndicator.running = false;
-//                confReloadTimer.start();
-//            }
-            conf.tabIndex = popPage.tabBarIndex;
-//            if (popPage.tabBarIndex) {
-//                conf.sourceUrl = popPage.ftpFileSource;
-//            } else {
-//                conf.sourceUrl = popPage.localFileSource;
-//            }
+            if (conf.sourceUrl.toString().length > 0) {
+                conf.tabIndex = popPage.tabBarIndex;
 
-            conf.saveConf();
-            confReloadTimer.start();
+                conf.saveConf();
+    //            confReloadTimer.start();
+                getData();
+            }
         }
 
 
     } // popup
 
-//    XmlListModel {
-//        id: xmlModel
-//        // source:
-//        query: "/ACARS/Body"
-
-
-//        onStatusChanged: {
-//            if(status == XmlListModel.Ready) {
-//                page1.loadDatisMessage();
-//                page1BusyIndicator.running = false;
-//                xmlReloadTimer.start();
-//            }
-//        }
-//    }
-
     Timer {
         id: confReloadTimer
 //        repeat: true
-        interval: 5000
+//        triggeredOnStart: true
+        interval: 5000  // 5000ms
         onTriggered: {
-//            xmlModel.reload();
-//            conf.readDatisText();
-//            mFtp.
             getData();
-
-//            restart();
-
         }
     }
 
     Connections {
         target: downloadManager
         onDownloadCompleted: {
-//            datisData.readFile("");
             if (datisData.readFile(conf.sourceUrl)) {
                 page1.loadDatisMessage();
-                page1BusyIndicator.running = false;
+//                page1BusyIndicator.running = false;
             } else {
                 page1BusyIndicator.running = true;
             }
@@ -163,13 +113,6 @@ ApplicationWindow {
         }
     }
 
-//    Connections {
-//        target: datisData
-//        onDataReady: {
-//            page1.loadDatisMessage();
-//            page1BusyIndicator.running = false;
-//        }
-//    }
 
     function getData() {
         switch (conf.tabIndex){
@@ -177,40 +120,25 @@ ApplicationWindow {
 //                    ftpPath.text = conf.xmlSourceUri
 //                ftpPath.text = conf.textSourceUri
 //                if ();
-            var url = conf.sourceUrl + "datis.ini";
-            downloadManager.doDownload(url);
-            url = conf.sourceUrl + "Voice.ini";
-            downloadManager.doDownload(url);
+//            var url = Qt.resolvedUrl(conf.sourceUrl.toString() + "datis.ini");
+//            downloadManager.doDownload(url);
+//            url = Qt.resolvedUrl(conf.sourceUrl.toString() + "Voice.ini");
+//            downloadManager.doDownload(url);
 
+            downloadManager.doDownload(Qt.resolvedUrl(conf.sourceUrl.toString() + "datis.ini"));
+            downloadManager.doDownload(Qt.resolvedUrl(conf.sourceUrl.toString() + "Voice.ini"));
 
             break;
         case 1:     // local file
-//                    openFileButtonText.text = conf.xmlSourceUri
-//                openFileButtonText.text = conf.textSourceUri
-//                break;
-//            if (datisData.readFile(conf.saveConf())){
-////                conf.readDatisText();
-//                page1.loadDatisMessage();
-//                page1BusyIndicator.running = false;
-////                confReloadTimer.start();
-//            } else {
-////                running = false;
-//                page1BusyIndicator.running = true;
-////                repeat = false;
-//            }
-//            datisData.readFile(conf.sourceUrl);
             if (datisData.readFile(conf.sourceUrl)) {
                 page1.loadDatisMessage();
-                page1BusyIndicator.running = false;
+//                page1BusyIndicator.running = false;
+                confReloadTimer.start();
             } else {
                 page1BusyIndicator.running = true;
             }
             break;
         }
     }
-
-//    FtpManager {
-
-//    }
 
 }

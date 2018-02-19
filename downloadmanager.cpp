@@ -103,8 +103,8 @@ void DownloadManager::downloadFinished(QNetworkReply *reply)
     } else {
         QString filename = saveFileName(url);
         if (saveToDisk(filename, reply))
-            printf("Download of %s succeeded (saved to %s)\n",
-                   url.toEncoded().constData(), qPrintable(filename));
+            printf("<%s> Download of %s succeeded (saved to %s)\n",
+                   qPrintable(mTime.currentDateTime().toString("yyyyMMdd.HHmmss")), url.toEncoded().constData(), qPrintable(filename));
     }
 
     currentDownloads.removeAll(reply);

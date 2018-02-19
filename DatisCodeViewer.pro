@@ -7,11 +7,9 @@ QT += qml gui quick network
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    Conf.cpp \
-    ftpmanager.cpp \
-    networker.cpp \
     downloadmanager.cpp \
-    datisdata.cpp
+    datisdata.cpp \
+    conf.cpp
 
 RESOURCES += qml.qrc
 
@@ -45,8 +43,6 @@ DISTFILES += \
 RC_ICONS = content/mail.ico
 
 HEADERS += \
-    Conf.h \
-    ftpmanager.h \
-    networker.h \
     downloadmanager.h \
-    datisdata.h
+    datisdata.h \
+    conf.h

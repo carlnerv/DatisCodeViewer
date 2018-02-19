@@ -13,6 +13,7 @@
 //#include <QStringList>
 //#include <QTimer>
 #include <QUrl>
+#include <QDateTime>
 
 //class DownloadManager : public QObject
 //{
@@ -57,6 +58,7 @@ public slots:
 
 private:
 //    bool downStatus = false;    // downloading:false, downloaded:true
+    QDateTime mTime;
 };
 
 
