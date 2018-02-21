@@ -1,10 +1,10 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>Page1.qml</file>
+        <file>ab-Page1.qml</file>
         <file>content/menu.png</file>
         <file>content/q.ico</file>
-        <file>PopupPage.qml</file>
+        <file>ab-PopupPage.qml</file>
         <file>content/mail.ico</file>
     </qresource>
 </RCC>

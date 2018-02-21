@@ -59,6 +59,7 @@ bool DatisData::readDatisInfo(const QString &path)
         if (buf.startsWith("Order"))
             mDatisVer = buf.mid(6);
     }
+    mDatisTime[10] = 'T';
     file.close();
     return true;
 }

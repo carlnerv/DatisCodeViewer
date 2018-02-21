@@ -154,10 +154,11 @@ Item {
         tArrRwy.text = datisData.runway;
         tDatisText.text = datisData.datisText;
         var time = new Date();
+        var expiredTime = new Date(Date(datisData.datisTime).getTime() + 65*60000);
 //        console.log(time);
 //        var datisExpiredTime = Date.fromLocaleString(locale, tExpiredTime.text, "yyyy-MM-dd hh:mm:ss");
         //                    console.log(datisExpiredTime)
-        if(time > Date.fromLocaleString(locale, datisData.datisTime, "yyyy-MM-dd hh:mm:ss")){
+        if(time > expiredTime){
             tATISVersion.color = "red"
         }
         else {
