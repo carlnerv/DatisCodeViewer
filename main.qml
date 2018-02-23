@@ -12,6 +12,8 @@ ApplicationWindow {
     height: 768
     title: qsTr("DATIS Code Viewer")
 
+//    var intSec = 0;
+
     background: Rectangle {
         color: "#eeeeee"
     }
@@ -60,7 +62,7 @@ ApplicationWindow {
                 color: "transparent"
 
                 Text {
-                    id: tATISVersion
+                    id: tAtisVer
                     //                color: "#07b716"
                     font.family: "Arial"
                     font.bold: true
@@ -70,7 +72,7 @@ ApplicationWindow {
                     fontSizeMode: Text.Fit
                     anchors.fill: parent
                     text: qsTr("-")
-                    font.pointSize: 120
+//                    font.pointSize: 120
                 }
 
                 Text {
@@ -109,7 +111,7 @@ ApplicationWindow {
                     font.bold: true
                     padding: 10
                     fontSizeMode: Text.Fit
-                    font.pointSize: 120
+//                    font.pointSize: 120
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.fill: parent
                 }
@@ -147,12 +149,15 @@ ApplicationWindow {
                 }
 
                 Text {
-                    id: tDatisText
+                    id: tAtisText
                     text: qsTr("-")
                     //                Layout.preferredWidth: 0
                     //                Layout.fillWidth: true
                     //                Layout.preferredHeight: implicitHeight * 3
                     //                text: qsTr("-")
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.fill: parent
+                    anchors.margins: 10
                     verticalAlignment: Text.AlignVCenter
                     //                horizontalAlignment: Text.AlignHCenter
                     horizontalAlignment: Text.AlignLeft
@@ -160,10 +165,7 @@ ApplicationWindow {
                     //                font.bold: true
                     padding: 10
                     fontSizeMode: Text.Fit
-                    font.pointSize: 32
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.fill: parent
-                    anchors.margins: 10
+//                    font.pointSize: 32
                     wrapMode: Text.WordWrap
                 }
             }
@@ -180,14 +182,15 @@ ApplicationWindow {
             id: page1BusyIndicator
             anchors.centerIn: parent
         }
-    }
+    } // page1
 
 
     // 设置页面
     Popup {
         id: popup
-        width: 400
+        width: 300
         height: parent.height
+        dim: true
 
         enter: Transition {
             NumberAnimation {
@@ -211,23 +214,21 @@ ApplicationWindow {
             border.width: 1
         }
 
-        Item {
-            id: popPage
-            anchors.fill: parent
-            ScrollView {
-                focusPolicy: Qt.WheelFocus
-                //        contentWidth: 200
-                //        anchors.fill: parent
+//        Rectangle {
+//            focusPolicy: Qt.WheelFocus
+//            anchors.fill: parent
 
                 ColumnLayout {
                     id: popupCl
                     anchors.fill: parent
 
+
                     TabBar {
                         id: tabBar
+                        currentIndex: 0
                         spacing: 1
                         Layout.fillWidth: true
-                        anchors.top: parent.top
+//                        anchors.top: parent.top
                         //        currentIndex: stackLayout.currentIndex
                         background: Rectangle {
                             color: "#eeeeee"
@@ -282,7 +283,8 @@ ApplicationWindow {
 
                     StackLayout {
                         id: stackLayout
-                        height: 150
+//                        height: 150
+                        Layout.preferredHeight: 100
                         //        currentIndex: 0
                         currentIndex: tabBar.currentIndex
                         //                    width: parent.width
@@ -292,13 +294,13 @@ ApplicationWindow {
                         // ftp信息
                         ColumnLayout {
                             id: ftpInfo
-                            //            spacing: 5
+//                            Layout.fillHeight: false
                             Layout.fillWidth: true
+                            spacing: 5
                             TextField {
                                 id: ftpPath
                                 Layout.fillWidth: true
                                 placeholderText: "FTP路径"
-                                //                width: popupCl.width
                                 onEditingFinished: {
                                     page1BusyIndicator.running = true;
                                     conf.sourceUrl = Qt.resolvedUrl(text);
@@ -306,40 +308,35 @@ ApplicationWindow {
                                     console.log(conf.sourceUrl == Qt.resolvedUrl(text));
                                 }
                             }
-                            //            Rectangle {
-                            //                height: 80
                             Text {
                                 text: "Datis输出文件所在的FTP路径<br>eg. ftp://[user[:password]@]hostname/path/"
                             }
-                            //            }
                         }
 
                         // 本地文件
-                        Item {
-                            id: item1
-                            height: ftpInfo.height
-                            Button {
-                                id: openFileButton
-                                Text {
-                                    id: openFileButtonText
-                                    anchors.fill: parent
-                                    text: "打开本地文件"
-                                    verticalAlignment: Text.AlignVCenter
-                                    horizontalAlignment: Text.AlignHCenter
-                                    elide: Text.ElideMiddle
 
-                                }
-                                width:  parent.width
-                                height: 40
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                anchors.verticalCenter: parent.verticalCenter
-                                onClicked: {
-                                    //                    fileDialog.
-                                    fileDialog.open();
-                                    page1BusyIndicator.running = true;
-                                }
+                        Button {
+                            id: openFileButton
+                            width:  parent.width
+                            height: 40
+//                            Layout.height: 40
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.verticalCenter: parent.verticalCenter
+                            Text {
+                                id: openFileButtonText
+                                anchors.fill: parent
+                                text: "打开本地文件"
+                                verticalAlignment: Text.AlignVCenter
+                                horizontalAlignment: Text.AlignHCenter
+                                elide: Text.ElideMiddle
+                            }
+                            onClicked: {
+                                //                    fileDialog.
+                                fileDialog.open();
+                                page1BusyIndicator.running = true;
                             }
                         }
+
                     } // StackLayout
 
 
@@ -354,9 +351,9 @@ ApplicationWindow {
                         id: gridLayout
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                         Layout.fillWidth: true
-        //                width: 100
-        //                height: 100
-                        rows: 4
+                        //                width: 100
+                        //                height: 100
+//                        rows: 4
                         columns: 2
 
                         Text {
@@ -366,9 +363,15 @@ ApplicationWindow {
                         }
 
                         SpinBox {
-                            id: spinBox_datis_ver_fontsize
+                            id: spinBox_datisVerFontSize
                             width: 100
                             height: 20
+                            stepSize: 5
+                            to: 200
+                            value: tAtisVer.font.pointSize
+                            onValueModified: {
+                                tAtisVer.font.pointSize = value;
+                            }
                         }
 
                         Text {
@@ -378,9 +381,15 @@ ApplicationWindow {
                         }
 
                         SpinBox {
-                            id: spinBox_runway_fontsize
+                            id: spinBox_runwayFontSize
                             width: 100
                             height: 20
+                            stepSize: 5
+                            to: 200
+                            value: tArrRwy.font.pointSize
+                            onValueChanged: {
+                                tArrRwy.font.pointSize = value;
+                            }
                         }
 
                         Text {
@@ -390,21 +399,32 @@ ApplicationWindow {
                         }
 
                         SpinBox {
-                            id: spinBox_datis_text_fontsize
+                            id: spinBox_datisTextFontSize
                             width: 100
                             height: 20
+                            to: 200
+                            value: tAtisText.font.pointSize
+                            onValueChanged: {
+                                tAtisText.font.pointSize = value;
+                            }
                         }
 
                         Text {
         //                    id: text1
-                            text: qsTr("刷新时间")
+                            text: qsTr("刷新时间（秒）")
                             font.pixelSize: 12
                         }
 
                         SpinBox {
-                            id: spinBox_refresh_interval
+                            id: spinBox_refreshInterval
                             width: 100
                             height: 20
+                            from: 2
+                            value: confReloadTimer.interval/1000
+                            to: 300
+                            onValueModified: {
+                                confReloadTimer.interval = value*1000;
+                            }
                         }
                     } // GridLayout
 
@@ -433,14 +453,18 @@ ApplicationWindow {
 
 
                 } // columnLayout
-            } // ScrollView
-        }
+//            } // ScrollView
+//        }
 
         onClosed: {
             if (conf.sourceUrl.toString().length > 0) {
 //                conf.tabIndex = popPage.tabBarIndex;
                 conf.tabIndex = tabBar.currentIndex;
-
+                conf.atisVerFontSize = tAtisVer.font.pointSize;
+                conf.runwayFontSize = tArrRwy.font.pointSize;
+                conf.atisTextFontSize = tAtisText.font.pointSize;
+                conf.timerInterval = confReloadTimer.interval/1000;
+//                conf.timerInterval = intSec;
                 conf.saveConf();
     //            confReloadTimer.start();
                 getData();
@@ -457,15 +481,27 @@ ApplicationWindow {
             switch (conf.tabIndex){
             case 0:
                 //                    ftpPath.text = conf.xmlSourceUri
-                ftpPath.text = conf.sourceUrl.toString()
+                ftpPath.text = conf.sourceUrl.toString();
                 break;
             case 1:
                 //                    openFileButtonText.text = conf.xmlSourceUri
-                openFileButtonText.text = conf.sourceUrl.toString().slice(8)
+                openFileButtonText.text = conf.sourceUrl.toString().slice(8);
                 break;
             }
             //                    confReloadTimer.start();
+            tAtisVer.font.pointSize = conf.atisVerFontSize;
+            tArrRwy.font.pointSize = conf.runwayFontSize;
+            tAtisText.font.pointSize = conf.atisTextFontSize;
+//            intSec = conf.timerInterval;
+            confReloadTimer.interval = conf.timerInterval*1000;
             getData();
+        } else {
+            tAtisVer.font.pointSize = 120;
+            tArrRwy.font.pointSize = 120;
+            tAtisText.font.pointSize = 32;
+//            intSec = 5;
+//            conf.timerInterval = 5;
+            confReloadTimer.interval = 5000;
         }
     }
 
@@ -496,7 +532,8 @@ ApplicationWindow {
         id: confReloadTimer
 //        repeat: true
 //        triggeredOnStart: true
-        interval: 5000  // 5000ms
+
+//        interval: conf.timerInterval*1000  // 5000ms
         onTriggered: {
             getData();
         }
@@ -547,7 +584,7 @@ ApplicationWindow {
 
     function readData() {
         if (datisData.readFile(conf.sourceUrl)) {
-            page1.loadDatisMessage();
+            loadDatisMessage();
 //                page1BusyIndicator.running = false;
         } else {
             page1BusyIndicator.running = true;
@@ -556,25 +593,25 @@ ApplicationWindow {
     }
 
     function loadDatisMessage() {
-//        tATISVersion.text = xmlModel.get(0).ATISVersion;
+//        tAtisVer.text = xmlModel.get(0).ATISVersion;
 //        tArrRwy.text = xmlModel.get(0).ArrRwy;
 //        tUpdateTime.text = xmlModel.get(0).UpdateTime;
 //        tExpiredTime.text = xmlModel.get(0).ExpiredTime;
 //        tFreeText.text = xmlModel.get(0).tagUP + "\n" + xmlModel.get(0).tagCH + "\n" + xmlModel.get(0).tagEN;
 
-        tATISVersion.text = datisData.datisVer;
+        tAtisVer.text = datisData.datisVer;
         tArrRwy.text = datisData.runway;
-        tDatisText.text = datisData.datisText;
+        tAtisText.text = datisData.datisText;
         var time = new Date();
-        var expiredTime = new Date(Date(datisData.datisTime).getTime() + 65*60000);
+        var expiredTime = new Date(new Date(datisData.datisTime).getTime() + 65*60000);
 //        console.log(time);
 //        var datisExpiredTime = Date.fromLocaleString(locale, tExpiredTime.text, "yyyy-MM-dd hh:mm:ss");
         //                    console.log(datisExpiredTime)
         if(time > expiredTime){
-            tATISVersion.color = "red"
+            tAtisVer.color = "red"
         }
         else {
-            tATISVersion.color = "green"
+            tAtisVer.color = "green"
         }
 
         page1BusyIndicator.running = false;
