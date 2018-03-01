@@ -30,6 +30,46 @@ int Conf::tabIndex() const
     return mTabIndex;
 }
 
+void Conf::setAtisVerFontSize(const double &a)
+{
+    mAtisVerFontSize = a;
+}
+
+double Conf::atisVerFontSize() const
+{
+    return mAtisVerFontSize;
+}
+
+void Conf::setRunwayFontSize(const double &a)
+{
+    mRunwayFontSize = a;
+}
+
+double Conf::runwayFontSize() const
+{
+    return mRunwayFontSize;
+}
+
+void Conf::setAtisTextFontSize(const double &a)
+{
+    mAtisTextFontSize = a;
+}
+
+double Conf::atisTextFontSize() const
+{
+    return mAtisTextFontSize;
+}
+
+void Conf::setTimerInterval(const int &a)
+{
+    mTimerInterval = a;
+}
+
+int Conf::timerInterval() const
+{
+    return mTimerInterval;
+}
+
 bool Conf::saveConf() const
 {
     QFile saveFile(QStringLiteral("conf.json"));
@@ -41,6 +81,10 @@ bool Conf::saveConf() const
     QJsonObject confObject;
     confObject["sourceUri"] = mSourceUrl.toString();
     confObject["tabIndex"] = mTabIndex;
+    confObject["atisVerFontSize"] = mAtisVerFontSize;
+    confObject["runwayFontSize"] = mRunwayFontSize;
+    confObject["atisTextFontSize"] = mAtisTextFontSize;
+    confObject["timerInterval"] = mTimerInterval;
     QJsonDocument saveDoc(confObject);
     saveFile.write(saveDoc.toJson());
     return true;
@@ -59,6 +103,10 @@ bool Conf::loadConf()
     QJsonObject confObject = loadDoc.object();
     mSourceUrl.setUrl(confObject["sourceUri"].toString());
     mTabIndex = confObject["tabIndex"].toInt();
+    mAtisVerFontSize = confObject["atisVerFontSize"].toDouble();
+    mRunwayFontSize = confObject["runwayFontSize"].toDouble();
+    mAtisTextFontSize = confObject["atisTextFontSize"].toDouble();
+    mTimerInterval = confObject["timerInterval"].toInt();
     return true;
 }
 
