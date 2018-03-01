@@ -12,8 +12,6 @@ ApplicationWindow {
     height: 768
     title: qsTr("DATIS Code Viewer")
 
-//    var intSec = 0;
-
     background: Rectangle {
         color: "#eeeeee"
     }
@@ -32,8 +30,9 @@ ApplicationWindow {
         }
     }
 
-    Item {
-        id: page1
+    Pane {
+        id: mainPane
+        padding: 0
         anchors.fill: parent
         GridLayout {
             //        id: layout
@@ -46,7 +45,7 @@ ApplicationWindow {
             flow: GridLayout.TopToBottom
 
             // 通播版本号
-            Rectangle {
+            Frame {
                 //            id: datisCodeRect
                 // 使用Layout布局则使用Layout宽高，另有最大最小宽高
                 Layout.preferredHeight: parent.height * 0.5
@@ -57,9 +56,11 @@ ApplicationWindow {
                 Layout.minimumWidth: 100
                 //            implicitHeight: 100
                 //            implicitWidth: 100
-                border.width: 1
-                border.color: "grey"
-                color: "transparent"
+                background: Rectangle {
+                    border.width: 1
+                    border.color: "grey"
+                    color: "transparent"
+                }
 
                 Text {
                     id: tAtisVer
@@ -87,7 +88,7 @@ ApplicationWindow {
             } // 通播版本号
 
             // 跑道号
-            Rectangle {
+            Frame {
                 //            id: rwyRect
                 // 相对高度
                 //            Layout.preferredHeight: parent.height - datisCodeRect.height - parent.columnSpacing
@@ -96,10 +97,13 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 Layout.minimumHeight: 100
                 Layout.minimumWidth: 100
-                border.width: 1
-                border.color: "grey"
-                color: "transparent"
                 Layout.preferredHeight: parent.height * 0.3
+
+                background: Rectangle {
+                    border.width: 1
+                    border.color: "grey"
+                    color: "transparent"
+                }
 
                 Text {
                     id: tArrRwy
@@ -126,7 +130,7 @@ ApplicationWindow {
             } // 跑道号
 
             // GridLayout 2
-            Rectangle {
+            Frame {
                 Layout.rowSpan: 2
                 //            Layout.columnSpan: 2
                 Layout.fillHeight: true
@@ -135,8 +139,10 @@ ApplicationWindow {
                 Layout.minimumWidth: 100
                 Layout.preferredWidth: parent.width * 0.66
 
-                border.color: "grey"
-                border.width: 1
+                background: Rectangle {
+                    border.color: "grey"
+                    border.width: 1
+                }
 
                 Text {
                     text: qsTr("通播内容")
@@ -188,172 +194,182 @@ ApplicationWindow {
     // 设置页面
     Popup {
         id: popup
-        width: 300
-        height: parent.height
         dim: true
+//        padding: 0
 
         enter: Transition {
             NumberAnimation {
                 property: "x";
-                from: rootWindow.width;
-                to: rootWindow.width - popup.width
+                from: rootWindow.width
+                to: rootWindow.width - popup.contentWidth
             }
         }
 
         exit: Transition {
             NumberAnimation {
                 property: "x"
-                from: popup.x
+                from: rootWindow.width - popup.contentWidth
                 to: rootWindow.width
             }
         }
 
         background: Rectangle {
-//            id: popupBG
             border.color: "grey"
             border.width: 1
         }
 
-//        Rectangle {
-//            focusPolicy: Qt.WheelFocus
-//            anchors.fill: parent
+        contentItem:
+        Frame {
+            id: popFrame
+            padding: 5
+            implicitHeight: mainPane.height
+            implicitWidth: 350
 
-                ColumnLayout {
-                    id: popupCl
-                    anchors.fill: parent
+            background: Rectangle {
+                color: "white"
+            }
 
+            ColumnLayout {
+                id: popupCl
+                anchors.fill: parent
 
-                    TabBar {
-                        id: tabBar
-                        currentIndex: 0
-                        spacing: 1
-                        Layout.fillWidth: true
-//                        anchors.top: parent.top
-                        //        currentIndex: stackLayout.currentIndex
+                TabBar {
+                    id: tabBar
+                    Layout.maximumWidth: 350
+                    Layout.fillWidth: true
+//                    currentIndex: 0
+                    spacing: 1
+
+                    background: Rectangle {
+                        color: "#eeeeee"
+                    }
+
+                    TabButton {
+                        id: tabButton1
+                        text: "FTP"
+                        anchors.left: parent.left
+                        // Button颜色样例
+                        // 查看QtQuick.Controls中的TabButton
+                        // 未选中的TabButton颜色是tabButtonColor
+                        //            background: Rectangle {
+                        //                    implicitHeight: 40
+                        //                    color: tabButton1.down
+                        //                        ? (tabButton1.checked ? Default.tabButtonCheckedPressedColor : Default.tabButtonPressedColor)
+                        //                        : (tabButton1.checked ? "transparent" : /*Default.tabButtonColor*/"grey")
+                        //                }
                         background: Rectangle {
-                            color: "#eeeeee"
-                            //            implicitHeight: 40
-                            //            border.color: "grey"
-                            //            border.width: 1
-                            //            radius: 2
+                            //                border.color: "grey"
+                            //                border.width: 1
+                            implicitHeight: 40
+                            color: parent.down ? "silver" : (parent.checked ? "transparent" : "grey")
+                            //                radius: 20
                         }
+                    }
 
-                        TabButton {
-                            id: tabButton1
-                            text: "FTP"
-                            anchors.left: parent.left
-                            // 使用Default需要import QtQuick.Controls.impl 2.1
-                            // 查看QtQuick.Controls中的TabButton
-                            // 未选中的TabButton颜色是tabButtonColor
-                            //            background: Rectangle {
-                            //                    implicitHeight: 40
-                            //                    color: tabButton1.down
-                            //                        ? (tabButton1.checked ? Default.tabButtonCheckedPressedColor : Default.tabButtonPressedColor)
-                            //                        : (tabButton1.checked ? "transparent" : /*Default.tabButtonColor*/"grey")
-                            //                }
-                            background: Rectangle {
-                                //                border.color: "grey"
-                                //                border.width: 1
-                                implicitHeight: 40
-                                color: parent.down ? "silver" : (parent.checked ? "transparent" : "grey")
-                                //                radius: 20
-                            }
-
-
+                    TabButton {
+                        id: tabButton2
+                        text: "本地文件"
+                        anchors.left: tabButton1.right
+                        //            background: Rectangle {
+                        //                    implicitHeight: 40
+                        //                    color: tabButton2.down
+                        //                        ? (tabButton2.checked ? Default.tabButtonCheckedPressedColor : Default.tabButtonPressedColor)
+                        //                        : (tabButton2.checked ? "transparent" : /*Default.tabButtonColor*/"grey")
+                        //                }
+                        background: Rectangle {
+                            //                border.color: "grey"
+                            //                border.width: 1
+                            implicitHeight: 40
+                            color: parent.down ? "silver" : (parent.checked ? "transparent" : "grey")
+                            //                radius: 20
                         }
-                        TabButton {
-                            id: tabButton2
-                            text: "本地文件"
-                            anchors.left: tabButton1.right
-                            //            background: Rectangle {
-                            //                    implicitHeight: 40
-                            //                    color: tabButton2.down
-                            //                        ? (tabButton2.checked ? Default.tabButtonCheckedPressedColor : Default.tabButtonPressedColor)
-                            //                        : (tabButton2.checked ? "transparent" : /*Default.tabButtonColor*/"grey")
-                            //                }
-                            background: Rectangle {
-                                //                border.color: "grey"
-                                //                border.width: 1
-                                implicitHeight: 40
-                                color: parent.down ? "silver" : (parent.checked ? "transparent" : "grey")
-                                //                radius: 20
-                            }
-                        }
-                    }   //TabBar
+                    }
+                }   //TabBar
 
+                Pane {
+                    padding: 0
+                    Layout.fillWidth: true
                     StackLayout {
                         id: stackLayout
-//                        height: 150
-                        Layout.preferredHeight: 100
-                        //        currentIndex: 0
+                        anchors.fill: parent
                         currentIndex: tabBar.currentIndex
-                        //                    width: parent.width
-                        anchors.top: tabBar.bottom
-                        anchors.topMargin: 5
 
                         // ftp信息
-                        ColumnLayout {
-                            id: ftpInfo
-//                            Layout.fillHeight: false
+                        Pane {
+                            padding: 0
                             Layout.fillWidth: true
-                            spacing: 5
-                            TextField {
-                                id: ftpPath
-                                Layout.fillWidth: true
-                                placeholderText: "FTP路径"
-                                onEditingFinished: {
-                                    page1BusyIndicator.running = true;
-                                    conf.sourceUrl = Qt.resolvedUrl(text);
-                                    console.log(conf.sourceUrl.toString());
-                                    console.log(conf.sourceUrl == Qt.resolvedUrl(text));
+
+                            ColumnLayout {
+                                id: ftpInfo
+                                anchors.fill: parent
+                                spacing: 5
+                                TextField {
+                                    id: ftpPath
+                                    Layout.fillWidth: true
+                                    placeholderText: "FTP路径"
+                                    onEditingFinished: {
+                                        page1BusyIndicator.running = true;
+                                        conf.sourceUrl = Qt.resolvedUrl(text);
+                                        console.log(conf.sourceUrl.toString());
+                                        console.log(conf.sourceUrl == Qt.resolvedUrl(text));
+                                    }
                                 }
-                            }
-                            Text {
-                                text: "Datis输出文件所在的FTP路径<br>eg. ftp://[user[:password]@]hostname/path/"
+
+                                Text {
+                                    text: "Datis输出文件所在的FTP路径<br>eg. ftp://[user[:password]@]hostname/path-to-folder/"
+                                    Layout.fillHeight: false
+                                    Layout.fillWidth: true
+                                    wrapMode: Text.WordWrap
+                                }
                             }
                         }
 
                         // 本地文件
+                        Pane {
+                            id: pane
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                            padding: 0
 
-                        Button {
-                            id: openFileButton
-                            width:  parent.width
-                            height: 40
-//                            Layout.height: 40
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.verticalCenter: parent.verticalCenter
-                            Text {
-                                id: openFileButtonText
-                                anchors.fill: parent
-                                text: "打开本地文件"
-                                verticalAlignment: Text.AlignVCenter
-                                horizontalAlignment: Text.AlignHCenter
-                                elide: Text.ElideMiddle
+                            Button {
+                                id: openFileButton
+                                width:  parent.width
+                                height: 40
+                                anchors.verticalCenter: parent.verticalCenter
+                                Text {
+                                    id: openFileButtonText
+                                    anchors.fill: parent
+                                    text: "打开本地文件"
+                                    verticalAlignment: Text.AlignVCenter
+                                    horizontalAlignment: Text.AlignHCenter
+                                    elide: Text.ElideMiddle
+                                }
+                                onClicked: {
+                                    //                    fileDialog.
+                                    fileDialog.open();
+                                    page1BusyIndicator.running = true;
+                                }
                             }
-                            onClicked: {
-                                //                    fileDialog.
-                                fileDialog.open();
-                                page1BusyIndicator.running = true;
-                            }
-                        }
-
+                        } //pane
                     } // StackLayout
+                } //pane
 
 
-
-                    Rectangle {
-                        height: 2
-                        Layout.fillWidth: true
-                        color: "grey"
-                    }
-
+                Rectangle {
+                    height: 2
+                    Layout.fillWidth: true
+                    color: "grey"
+                }
+                Pane {
+                    padding: 0
+                    Layout.preferredHeight: 200
+                    Layout.fillWidth: true
                     GridLayout {
                         id: gridLayout
-                        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                        Layout.fillWidth: true
-                        //                width: 100
-                        //                height: 100
-//                        rows: 4
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.left: parent.left
+                        anchors.bottom: parent.bottom
+                        anchors.top: parent.top
                         columns: 2
 
                         Text {
@@ -427,34 +443,30 @@ ApplicationWindow {
                             }
                         }
                     } // GridLayout
+                }
+                Rectangle {
+                    height: 2
+                    Layout.fillWidth: true
+                    color: "grey"
+                }
 
-                    Rectangle {
-                        height: 2
-                        Layout.fillWidth: true
-                        color: "grey"
+                Rectangle {
+                    Layout.fillWidth:  true
+//                    Layout.minimumHeight: 200
+                    Layout.fillHeight: true
+                    Text {
+                        anchors.fill: parent
+                        fontSizeMode: Text.Fit
+                        text: "<h1>关于Datis Code Viewer</h1><br><p><b>Version 1.0.3</b><br>
+        使用 Qt 5.10</p>
+        <p>Copyright © 2017-2018 carlnerv</p>
+        <p>License: <a href='https://github.com/carlnerv/DatisCodeViewer/blob/master/LICENSE'>MIT License</a><br>
+        Project Hosted at <a href='https://github.com/carlnerv/DatisCodeViewer'>GitHub</a></p>"
+//                        onLinkActivated: Qt.openUrlExternally("https://github.com/carlnerv/DatisCodeViewer")
                     }
-
-                    Rectangle {
-                        Layout.fillWidth:  true
-                        Layout.minimumHeight: 200
-                        Layout.fillHeight: true
-                        Text {
-                            anchors.fill: parent
-                            fontSizeMode: Text.Fit
-                            text: "<h1>关于Datis Code Viewer</h1><br><p><b>Version 1.0.2</b><br>
-            使用 Qt 5.10</p>
-            <p>Copyright © 2017 carlnerv</p>
-            <p>License: <a href=''>MIT License</a><br>
-            Project Hosted at <a href='https://github.com/carlnerv/DatisCodeViewer'>GitHub</a></p>"
-                            onLinkActivated: Qt.openUrlExternally("https://github.com/carlnerv/DatisCodeViewer")
-                        }
-                    }
-
-
-
-                } // columnLayout
-//            } // ScrollView
-//        }
+                }
+            } // columnLayout
+        } // Frame
 
         onClosed: {
             if (conf.sourceUrl.toString().length > 0) {
